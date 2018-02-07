@@ -1,3 +1,22 @@
+/**
+ * <h1>StegMeister</h1><br>
+ *     StegMeister, hidden opportunities <br><br>
+ *         <strong>Features include:</strong><br><br>
+ *             <ul>
+ *                 <li>Hidden messages</li>
+ *                 <li>Encrypted backend</li>
+ *                 <li>Key generation</li>
+ *                 <li>Fancy UI</li>
+ *             </ul>
+ *
+ * @author Zachary Gale
+ * @author Chris Waterman
+ * @author add name
+ * @author add name
+ * @version 0.1 (Current version number)
+ * @since 0.1 (The version that the class was first added to the project)
+ */
+
 package Steg;
 
 import javafx.application.Application;
