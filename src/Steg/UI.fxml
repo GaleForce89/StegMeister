@@ -3,11 +3,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextArea editable="false" text="Steg test windows for testing backend development." />
-      <TextArea editable="false" text="window 2" />
-      <TextArea editable="false" text="window 3: use multiple windows to test backends" />
+      <TextArea id="test1" editable="false" text="Steg test windows for testing backend development." />
+      <TextArea id="test2" editable="false" text="window 2" />
+      <TextArea id="test3" editable="false" text="window 3: use multiple windows to test backends" />
    </children>
 </VBox>
