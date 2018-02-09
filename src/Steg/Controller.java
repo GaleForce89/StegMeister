@@ -1,7 +1,6 @@
 package Steg;
 
 //Import required packages for javafx
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -30,7 +29,7 @@ public class Controller {
         }
 
         //test1.setText(test1input.getText()); //Test to see if ui functions and it does
-        EnCrypt cryptotest = new EnCrypt(); //create a new encryption object
+        Encrypt cryptotest = new Encrypt(); //create a new encryption object
 
         String msg = "Hopeitworks"; //the message
         String key = "don'tfailmenopwAES"; //our key

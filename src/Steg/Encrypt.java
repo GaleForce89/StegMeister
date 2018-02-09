@@ -19,7 +19,7 @@ import java.util.Base64.Encoder;
 import java.util.Base64.Decoder;
 import java.lang.String;
 
-public class EnCrypt {
+public class Encrypt {
     String key; //used to enter password
     String msg; //used for message
 
@@ -27,12 +27,12 @@ public class EnCrypt {
     /**
      * Default constructor to null
      */
-    public EnCrypt(){
+    public Encrypt(){
         this.key = null;
         this.msg = null;
     }
 
-    public EnCrypt(String key, String msg){ //may not need additional constructors time will tell
+    public Encrypt(String key, String msg){ //may not need additional constructors time will tell
         this.key = key; //construct with a key
         this.msg = msg;
     }
