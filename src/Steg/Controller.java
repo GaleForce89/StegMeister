@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.security.NoSuchAlgorithmException;
+
 public class Controller {
 
     @FXML private javafx.scene.control.TextArea test1; //text areas
@@ -15,7 +17,7 @@ public class Controller {
     @FXML private javafx.scene.control.TextField test3input;
 
     @FXML
-    public void test1btn(){
+    public void test1btn() throws NoSuchAlgorithmException {
 
         //display error if the input is empty **update when we add keys**
         if(test1input.getText().trim().isEmpty()){
@@ -29,15 +31,17 @@ public class Controller {
         }
 
         //test1.setText(test1input.getText()); //Test to see if ui functions and it does
-        Encrypt cryptotest = new Encrypt(); //create a new encryption object
+        Cipher cryptotest = new Cipher(); //create a new encryption object
 
         String msg = "Hopeitworks"; //the message
         String key = "don'tfailmenopwAES"; //our key
         String sMsg;
 
-        sMsg = cryptotest.Crypt(msg, key);
-
-        test1.setText(sMsg);
+        //sMsg = cryptotest.Crypt(msg, key);
+        cryptotest.setKeyRand();
+        cryptotest.saveKey("saved.key");
+        System.out.println(cryptotest.getKey());//console output
+        test1.setText(cryptotest.getKey().toString());//gui output
 
 
     }

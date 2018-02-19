@@ -1,4 +1,4 @@
 package Steg;
 
-public class Decrypt {
+public class Decrypt extends Cipher {
 }

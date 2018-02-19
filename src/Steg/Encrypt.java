@@ -1,41 +1,21 @@
 package Steg;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.Key;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.EncodedKeySpec;
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.NullCipher;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.spec.KeySpec;
-import java.util.Base64;
-import java.util.Base64.Encoder;
-import java.util.Base64.Decoder;
-import java.lang.String;
+
+/**
+ * The encrypt class is used for all things encryption, to include key generation.
+ */
 
 public class Encrypt {
-    String key; //used to enter password
-    String msg; //used for message
-
 
     /**
      * Default constructor to null
      */
     public Encrypt(){
-        this.key = null;
-        this.msg = null;
     }
 
-    public Encrypt(String key, String msg){ //may not need additional constructors time will tell
-        this.key = key; //construct with a key
-        this.msg = msg;
-    }
 
     public String Crypt(String msg, String test){
         /*
@@ -50,9 +30,20 @@ public class Encrypt {
             ex.printStackTrace();
         }
 
-        return "Something went terribly wrong....."; //display something went wrong if it does
+        return "Something went terribly wrong..... contact support"; //display something went wrong if it does
     }
 
+
+    /**
+     * Generate a random secret key
+     *
+     * @return Random secret key
+     * @throws NoSuchAlgorithmException
+     */
+    public SecretKey genKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        return keyGen.generateKey();
+    }
 
 
 }
