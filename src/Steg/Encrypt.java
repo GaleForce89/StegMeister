@@ -46,7 +46,7 @@ public class Encrypt {
 
         try {
             //throw exceptiopn if key size is to large
-            if (Cipher.getMaxAllowedKeyLength("AES") > keySize) {
+            if (Cipher.getMaxAllowedKeyLength("AES") < keySize) {
                 // unlimited crypto is not installed
                 throw new InvalidParameterException("Key size of " + keySize
                     + "bits not supported in this runtime, download JCE files");
