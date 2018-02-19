@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
 
 public class Controller {
@@ -17,7 +18,7 @@ public class Controller {
     @FXML private javafx.scene.control.TextField test3input;
 
     @FXML
-    public void test1btn() throws NoSuchAlgorithmException {
+    public void test1btn() throws NoSuchAlgorithmException, NoSuchPaddingException {
 
         //display error if the input is empty **update when we add keys**
         if(test1input.getText().trim().isEmpty()){
@@ -31,7 +32,7 @@ public class Controller {
         }
 
         //test1.setText(test1input.getText()); //Test to see if ui functions and it does
-        Cipher cryptotest = new Cipher(); //create a new encryption object
+        Ciph cryptotest = new Ciph(); //create a new encryption object
 
         String msg = "Hopeitworks"; //the message
         String key = "don'tfailmenopwAES"; //our key
@@ -40,6 +41,7 @@ public class Controller {
         //sMsg = cryptotest.Crypt(msg, key);
         cryptotest.setKeyRand();
         cryptotest.saveKey("saved.key");
+        System.out.println(cryptotest.maxKeySize());
         System.out.println(cryptotest.getKey());//console output
         test1.setText(cryptotest.getKey().toString());//gui output
 

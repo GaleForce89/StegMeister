@@ -1,7 +1,9 @@
 package Steg;
 
+import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -40,9 +42,25 @@ public class Encrypt {
      * @return Random secret key
      * @throws NoSuchAlgorithmException
      */
-    public SecretKey genKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        return keyGen.generateKey();
+    public SecretKey genKey(int keySize) throws InvalidParameterException {
+
+        try {
+            //throw exceptiopn if key size is to large
+            if (Cipher.getMaxAllowedKeyLength("AES") < keySize) {
+                // this may be an issue if unlimited crypto is not installed
+                throw new InvalidParameterException("Key size of " + keySize
+                    + "bits not supported in this runtime, download JCE files");
+            }
+
+            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            keyGen.init(keySize);
+
+            return keyGen.generateKey();
+        } catch (final NoSuchAlgorithmException e) {
+            // AES functionality is part of java se
+            throw new IllegalStateException(
+                "AES should be preset, please reconfigure java", e);
+        }
     }
 
 
