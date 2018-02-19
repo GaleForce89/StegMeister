@@ -1,5 +1,7 @@
 package Steg;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,18 +10,22 @@ import java.security.NoSuchAlgorithmException;
 /**
  * The cipher class it the main class used for encrypting/decrypting a file
  */
-public class Cipher {
+public class Ciph {
     SecretKey key; //used to enter password
     String msg; //used for message
+    int keySize; //used to set keysize
+    Cipher stego; //aptly named cipher
 
     Encrypt encrypt = new Encrypt(); //create our encryption object
 
     /**
      * Default constructor to null
      */
-    public Cipher() {
+    public Ciph() throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.key = null;
         this.msg = null;
+        this.keySize = 128; //default to 128bits
+        this.stego = Cipher.getInstance("AES/CBC/PKCS5Padding");
     }
 
     /**
@@ -43,10 +49,9 @@ public class Cipher {
     /**
      * Generate and set a random secret key
      *
-     * @throws NoSuchAlgorithmException
      */
-    public void setKeyRand() throws NoSuchAlgorithmException {
-        this.key = encrypt.genKey();
+    public void setKeyRand() {
+        this.key = encrypt.genKey(keySize);
     }
 
     /**
@@ -61,5 +66,15 @@ public class Cipher {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Check the maximum key size supported by the jre
+     *
+     * @return Key size as int
+     * @throws NoSuchAlgorithmException
+     */
+    public int maxKeySize() throws NoSuchAlgorithmException {
+        return Cipher.getMaxAllowedKeyLength("AES");
     }
 }
