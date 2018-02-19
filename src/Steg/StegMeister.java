@@ -65,8 +65,8 @@ public class StegMeister extends Application {
     private static void showErrorDialog(Throwable e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Exception Dialog");
-        alert.setHeaderText("Look, an Exception Dialog");
-        alert.setContentText("Something went terribly wrong....");
+        alert.setHeaderText("Something went horribly wrong...");
+        alert.setContentText("Click the button to view");
         alert.setResizable(true);
 
 
