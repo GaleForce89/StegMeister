@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Steg.Controller">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Steg.Controller">
    <children>
       <TextArea fx:id="test1" editable="false" text="Steg Test Windows">
          <VBox.margin>
@@ -24,17 +24,17 @@
             <Insets top="20.0" />
          </VBox.margin>
          <children>
-            <Label text="Test1">
+            <Label prefHeight="16.0" prefWidth="57.0" text="Test1">
                <HBox.margin>
-                  <Insets left="70.0" />
+                  <Insets left="50.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="test1input">
+            <TextField fx:id="test1input" onAction="#test1btn">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
-            <Label text="Test2">
+            <Label prefHeight="16.0" prefWidth="57.0" text="Test2">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -44,7 +44,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
-            <Label text="Test3">
+            <Label prefHeight="16.0" prefWidth="57.0" text="Test3">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -58,7 +58,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button id="btn1" mnemonicParsing="false" onAction="#test1btn" text="Button1">
+            <Button id="btn1" fx:id="testbtn1" mnemonicParsing="false" onAction="#test1btn" text="Button1">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

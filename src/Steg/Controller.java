@@ -8,7 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
 
-public class Controller {
+public class Controller extends StegMeister{
 
     @FXML private javafx.scene.control.TextArea test1; //text areas
     @FXML private javafx.scene.control.TextArea test2;
@@ -26,6 +26,7 @@ public class Controller {
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Invalid input");
             alert.setContentText("Please enter a password or select a key file");
+            alert.initOwner(getPrimaryStage());
             alert.showAndWait();
 
             return;//exit
