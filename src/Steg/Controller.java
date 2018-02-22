@@ -27,13 +27,15 @@ public class Controller extends StegMeister{
             alert.setHeaderText("Invalid input");
             alert.setContentText("Please enter a password or select a key file");
             alert.initOwner(getPrimaryStage());
+            alert.setResizable(true);
+            alert.getDialogPane().setPrefSize(400,180);
             alert.showAndWait();
 
             return;//exit
         }
 
         //test1.setText(test1input.getText()); //Test to see if ui functions and it does
-        Ciph cryptotest = new Ciph(); //create a new encryption object
+        Encrypt cryptotest = new Encrypt(); //create a new encryption object
 
         String msg = "Hopeitworks"; //the message
         String key = "don'tfailmenopwAES"; //our key

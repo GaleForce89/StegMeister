@@ -2,6 +2,7 @@ package Steg;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -10,13 +11,21 @@ import java.security.NoSuchAlgorithmException;
  * The encrypt class is used for all things encryption, to include key generation.
  */
 
-public class Encrypt {
+public class Encrypt extends Ciph{
 
     /**
      * Default constructor to null
      */
-    public Encrypt(){
+    public Encrypt() throws NoSuchPaddingException, NoSuchAlgorithmException {
+        super();
     }
+
+    /**
+     * Default constructor to null
+     */
+    //public Encrypt() throws NoSuchAlgorithmException, NoSuchPaddingException {
+   //     super();
+    //}
 
 
     public String Crypt(String msg, String test){
@@ -62,6 +71,10 @@ public class Encrypt {
                 "AES should be preset, please reconfigure java", e);
         }
     }
+
+    public void setKeyRand() {
+             this.key = genKey(keySize);
+        }
 
 
 }

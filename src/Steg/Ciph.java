@@ -16,7 +16,7 @@ public class Ciph {
     int keySize; //used to set keysize
     Cipher stego; //aptly named cipher
 
-    Encrypt encrypt = new Encrypt(); //create our encryption object
+    //Encrypt encrypt = new Encrypt(); //create our encryption object
 
     /**
      * Default constructor to null
@@ -50,9 +50,9 @@ public class Ciph {
      * Generate and set a random secret key
      *
      */
-    public void setKeyRand() {
-        this.key = encrypt.genKey(keySize);
-    }
+   // public void setKeyRand() {
+   //     this.key = encrypt.genKey(keySize);
+    //}
 
     /**
      * Save the current key to a file for later use
