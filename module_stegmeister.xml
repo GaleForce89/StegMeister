@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_stegmeister" default="compile.module.stegmeister">
+  <dirname property="module.stegmeister.basedir" file="${ant.file.module_stegmeister}"/>
+  
+  <property name="module.jdk.home.stegmeister" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.stegmeister" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.stegmeister" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.stegmeister" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+  
+  <property name="stegmeister.output.dir" value="${module.stegmeister.basedir}/out/production/StegMeister"/>
+  <property name="stegmeister.testoutput.dir" value="${module.stegmeister.basedir}/out/test/StegMeister"/>
+  
+  <path id="stegmeister.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="stegmeister.module.production.classpath">
+    <path refid="${module.jdk.classpath.stegmeister}"/>
+  </path>
+  
+  <path id="stegmeister.runtime.production.module.classpath">
+    <pathelement location="${stegmeister.output.dir}"/>
+  </path>
+  
+  <path id="stegmeister.module.classpath">
+    <path refid="${module.jdk.classpath.stegmeister}"/>
+    <pathelement location="${stegmeister.output.dir}"/>
+  </path>
+  
+  <path id="stegmeister.runtime.module.classpath">
+    <pathelement location="${stegmeister.testoutput.dir}"/>
+    <pathelement location="${stegmeister.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.stegmeister">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.stegmeister">
+    <patternset refid="excluded.from.module.stegmeister"/>
+  </patternset>
+  
+  <path id="stegmeister.module.sourcepath">
+    <dirset dir="${module.stegmeister.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.stegmeister" depends="compile.module.stegmeister.production,compile.module.stegmeister.tests" description="Compile module StegMeister"/>
+  
+  <target name="compile.module.stegmeister.production" depends="register.custom.compilers" description="Compile module StegMeister; production classes">
+    <mkdir dir="${stegmeister.output.dir}"/>
+    <javac2 destdir="${stegmeister.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.stegmeister}/javac">
+      <compilerarg line="${compiler.args.stegmeister}"/>
+      <bootclasspath refid="stegmeister.module.bootclasspath"/>
+      <classpath refid="stegmeister.module.production.classpath"/>
+      <src refid="stegmeister.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.stegmeister"/>
+    </javac2>
+    
+    <copy todir="${stegmeister.output.dir}">
+      <fileset dir="${module.stegmeister.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.stegmeister.tests" depends="register.custom.compilers,compile.module.stegmeister.production" description="compile module StegMeister; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.stegmeister" description="cleanup module">
+    <delete dir="${stegmeister.output.dir}"/>
+    <delete dir="${stegmeister.testoutput.dir}"/>
+  </target>
+</project>
