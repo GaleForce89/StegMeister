@@ -1,11 +1,12 @@
 package Steg.Steganography;
 
-import java.util.stream.IntStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.util.Pair;
 
-public class BasicDecoder implements Decoder{
+import java.util.stream.IntStream;
+
+public class BasicDecoder {
     public String decodeImage(Image image){
         int imageWidth = (int)image.getWidth();
         int imageHeight = (int)image.getHeight();

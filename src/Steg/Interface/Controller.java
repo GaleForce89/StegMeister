@@ -1,34 +1,29 @@
 package Steg.Interface;
 
 //Import required packages for javafx
+
 import Steg.Cryptography.Ciph;
-import Steg.Cryptography.Cryptography;
-import Steg.Cryptography.Encrypt;
 import Steg.StegMeister;
-import Steg.Steganography.Encoder;
 import Steg.Steganography.Model;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
 
-public abstract class Controller extends StegMeister {
+public class Controller extends StegMeister {
     private Ciph Ciph;
     private Model model;
-    Image imagee = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/White_Cliffs_of_Dover_02.JPG/450px-White_Cliffs_of_Dover_02.JPG");
+    //Image imagee = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/White_Cliffs_of_Dover_02.JPG/450px-White_Cliffs_of_Dover_02.JPG");
 
     public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.Ciph = new Ciph(); //initialize new ciph
-        imgb.setImage(imagee);
+       this.model = new Model();
+       // this.model = model;
     }
 
     @FXML private javafx.scene.control.TextArea test1; //text areas
@@ -76,17 +71,19 @@ public abstract class Controller extends StegMeister {
 
 
     }
+    /*
     public void setImgb(){ //example set image
        imgb.setImage(imagee);
     }
+    */
     public void onEncode(){
-        Image modified = model.encodeImage(imgb.getImage(), test2.getText());
+        Image modified = model.encoder.encodeImage(imgb.getImage(), test2input.getText());
         imga.setImage(modified);
     }
 
     public void onDecode(){
-        String message =  model.decodeImage(imga.getImage());
-        System.out.println(message);
+        String message =  model.decoder.decodeImage(imga.getImage());
+        test3input.setText(message);
 
     }
     public void injectUI(ImageView original, ImageView modified, TextArea fieldMessage){

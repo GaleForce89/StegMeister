@@ -1,13 +1,14 @@
 package Steg.Steganography;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.util.Pair;
+
 import java.util.stream.IntStream;
 
-public class BasicEncoder implements Encoder{
+public class BasicEncoder{
     public Image encodeImage(Image image, String message){
         int width = (int)image.getWidth();
         int height = (int)image.getHeight();

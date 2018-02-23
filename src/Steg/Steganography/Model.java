@@ -1,19 +1,17 @@
 package Steg.Steganography;
 
-import javafx.scene.image.Image;
-
 public class Model {
-    private Encoder encoder;
-    private Decoder decoder;
+    public BasicEncoder encoder;
+    public BasicDecoder decoder;
 
-    public Model(Encoder encoder, Decoder decoder){
-        this.encoder = encoder;
-        this.decoder = decoder;
+    public Model(){
+        this.encoder = new BasicEncoder();
+        this.decoder = new BasicDecoder();
     }
-    public Image encodeImage(Image image, String message){
-        return encoder.encodeImage(image, message);
-    }
-    public String decodeImage(Image image){
-        return decoder.decodeImage(image);
-    }
+    //public Image encodeImage(Image image, String message){
+   //     return encoder.encodeImage(image, message);
+  //  }
+  //  public String decodeImage(Image image){
+   //     return decoder.decodeImage(image);
+   // }
 }
