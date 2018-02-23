@@ -1,9 +1,9 @@
-package Steg;
+package Steg.Cryptography;
 
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
 
-public class Decrypt extends Ciph {
+public class Decrypt extends Cryptography {
     /**
      * Default constructor to null
      */

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Steg</OriginalElement>
+  <nodes>
+    <node x="236.0" y="425.5">Steg.Steganography.Model</node>
+    <node x="901.0075757575758" y="269.5">Steg.Cryptography.Decrypt</node>
+    <node x="96.05303030303037" y="269.5">Steg.Steganography.Decoder</node>
+    <node x="513.3125" y="459.5">Steg.Steganography.BasicEncoder</node>
+    <node x="794.1325757575758" y="648.0">Steg.Interface.Controller</node>
+    <node x="368.0700757575758" y="269.5">Steg.Steganography.Encoder</node>
+    <node x="969.842803030303" y="404.0">Steg.StegMeister</node>
+    <node x="782.7405303030304" y="0.0">Steg.Cryptography.Cryptography</node>
+    <node x="673.0075757575758" y="236.0">Steg.Cryptography.Encrypt</node>
+    <node x="795.842803030303" y="448.0">Steg.Cryptography.Ciph</node>
+    <node x="0.0" y="470.5">Steg.Steganography.BasicDecoder</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Steg.Steganography.Model" target="Steg.Steganography.Encoder">
+      <point x="31.875" y="-70.5" />
+      <point x="395.375" y="384.0" />
+      <point x="410.5700757575758" y="384.0" />
+      <point x="-85.0" y="25.5" />
+    </edge>
+    <edge source="Steg.Interface.Controller" target="Steg.StegMeister">
+      <point x="43.0" y="-125.5" />
+      <point x="923.1325757575758" y="618.0" />
+      <point x="1033.592803030303" y="618.0" />
+      <point x="-63.75" y="92.0" />
+    </edge>
+    <edge source="Steg.Cryptography.Ciph" target="Steg.Cryptography.Encrypt">
+      <point x="-19.25" y="-48.0" />
+      <point x="853.592803030303" y="384.0" />
+      <point x="829.0075757575758" y="384.0" />
+      <point x="52.0" y="59.0" />
+    </edge>
+    <edge source="Steg.Interface.Controller" target="Steg.Steganography.Model">
+      <point x="-43.0" y="-125.5" />
+      <point x="837.1325757575758" y="618.0" />
+      <point x="427.25" y="618.0" />
+      <point x="63.75" y="70.5" />
+    </edge>
+    <edge source="Steg.Steganography.Model" target="Steg.Steganography.Decoder">
+      <point x="-31.875" y="-70.5" />
+      <point x="331.625" y="384.0" />
+      <point x="276.05303030303037" y="384.0" />
+      <point x="72.0" y="25.5" />
+    </edge>
+    <edge source="Steg.Steganography.BasicEncoder" target="Steg.Steganography.Encoder">
+      <point x="0.0" y="-36.5" />
+      <point x="640.8125" y="384.0" />
+      <point x="580.5700757575758" y="384.0" />
+      <point x="85.0" y="25.5" />
+    </edge>
+    <edge source="Steg.Cryptography.Ciph" target="Steg.Cryptography.Decrypt">
+      <point x="19.25" y="-48.0" />
+      <point x="892.092803030303" y="374.0" />
+      <point x="931.2575757575758" y="374.0" />
+      <point x="-30.25" y="25.5" />
+    </edge>
+    <edge source="Steg.Interface.Controller" target="Steg.Cryptography.Ciph">
+      <point x="-14.333333333333371" y="-125.5" />
+      <point x="865.7992424242425" y="608.0" />
+      <point x="834.342803030303" y="608.0" />
+      <point x="-38.5" y="48.0" />
+    </edge>
+    <edge source="Steg.Cryptography.Encrypt" target="Steg.Cryptography.Cryptography">
+      <point x="-52.0" y="-59.0" />
+      <point x="725.0075757575758" y="211.0" />
+      <point x="804.7405303030304" y="211.0" />
+      <point x="-66.0" y="93.0" />
+    </edge>
+    <edge source="Steg.Cryptography.Decrypt" target="Steg.Cryptography.Cryptography">
+      <point x="30.25" y="-25.5" />
+      <point x="991.7575757575758" y="211.0" />
+      <point x="936.7405303030304" y="211.0" />
+      <point x="66.0" y="93.0" />
+    </edge>
+    <edge source="Steg.Steganography.BasicDecoder" target="Steg.Steganography.Decoder">
+      <point x="0.0" y="-25.5" />
+      <point x="108.0" y="384.0" />
+      <point x="132.05303030303037" y="384.0" />
+      <point x="-72.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="654.5" y="451.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

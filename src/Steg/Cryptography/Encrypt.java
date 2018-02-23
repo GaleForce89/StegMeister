@@ -1,4 +1,4 @@
-package Steg;
+package Steg.Cryptography;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * The encrypt class is used for all things encryption, to include key generation.
  */
 
-public class Encrypt extends Ciph{
+public class Encrypt extends Cryptography {
 
     /**
      * Default constructor to null

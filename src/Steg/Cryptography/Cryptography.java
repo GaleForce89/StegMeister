@@ -1,4 +1,4 @@
-package Steg;
+package Steg.Cryptography;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * The cipher class it the main class used for encrypting/decrypting a file
  */
-public class Ciph {
+public class Cryptography {
     SecretKey key; //used to enter password
     String msg; //used for message
     int keySize; //used to set keysize
@@ -21,7 +21,7 @@ public class Ciph {
     /**
      * Default constructor to null
      */
-    public Ciph() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public Cryptography() throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.key = null;
         this.msg = null;
         this.keySize = 128; //default to 128bits

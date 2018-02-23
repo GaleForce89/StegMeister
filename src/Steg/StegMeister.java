@@ -25,15 +25,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -46,7 +43,7 @@ public class StegMeister extends Application {
     public void start(Stage primaryStage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
         setPrimaryStage(primaryStage);
-        Parent root = FXMLLoader.load(getClass().getResource("UI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Interface/UI.fxml"));
         primaryStage.setTitle("StegMeister");
         primaryStage.getIcons().add(new Image(StegMeister.class.getResourceAsStream("icons/main_icon.png")));
         primaryStage.setScene(new Scene(root, 800, 600));
