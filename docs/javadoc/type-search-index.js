@@ -1,4 +1,1 @@
-typeSearchIndex = [{"p": "Steg", "l": "Cipher"}, {"p": "Steg", "l": "Controller"}, {
-    "p": "Steg",
-    "l": "Decrypt"
-}, {"p": "Steg", "l": "Encrypt"}, {"p": "Steg", "l": "Steganography"}, {"p": "Steg", "l": "StegMeister"}];
+typeSearchIndex = [{"p":"Steg.Steganography","l":"BasicDecoder"},{"p":"Steg.Steganography","l":"BasicEncoder"},{"p":"Steg.Cryptography","l":"Ciph"},{"p":"Steg.Interface","l":"Controller"},{"p":"Steg.Cryptography","l":"Cryptography"},{"p":"Steg.Cryptography","l":"Decrypt"},{"p":"Steg.Cryptography","l":"Encrypt"},{"p":"Steg.Steganography","l":"Model"},{"p":"Steg","l":"StegMeister"}]
