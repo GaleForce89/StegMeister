@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l": "Steg"}];
+packageSearchIndex = [{"l":"Steg"},{"l":"Steg.Cryptography"},{"l":"Steg.Interface"},{"l":"Steg.Steganography"}]
