@@ -50,8 +50,8 @@ public class Cryptography {
      * Generate and set a random secret key
      *
      */
-   // public void setKeyRand() {
-   //     this.key = encrypt.genKey(keySize);
+    // public void setKeyRand() {
+    //     this.key = encrypt.genKey(keySize);
     //}
 
     /**

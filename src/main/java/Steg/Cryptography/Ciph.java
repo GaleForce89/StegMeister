@@ -8,7 +8,7 @@ public class Ciph {
     public Decrypt Decrypt;
 
     public Ciph() throws NoSuchAlgorithmException, NoSuchPaddingException {
-        this.Encrypt =  new Encrypt();
-       this.Decrypt = new Decrypt();
+        this.Encrypt = new Encrypt();
+        this.Decrypt = new Decrypt();
     }
 }

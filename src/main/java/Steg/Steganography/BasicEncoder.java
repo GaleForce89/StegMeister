@@ -8,10 +8,10 @@ import javafx.util.Pair;
 
 import java.util.stream.IntStream;
 
-public class BasicEncoder{
-    public Image encodeImage(Image image, String message){
-        int width = (int)image.getWidth();
-        int height = (int)image.getHeight();
+public class BasicEncoder {
+    public Image encodeImage(Image image, String message) {
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
 
         WritableImage copy = new WritableImage(image.getPixelReader(), width, height);
         PixelWriter writer = copy.getPixelWriter();
@@ -19,8 +19,8 @@ public class BasicEncoder{
 
         boolean[] bits = encodeImage(message);
         IntStream.range(0, bits.length)
-            .mapToObj(i -> new Pair<>(i, reader.getArgb(i%width, i / width)))
-            .map(pair -> new Pair<>(pair.getKey(), bits[pair.getKey()]? pair.getValue() | 1 : pair.getValue() &~ 1))
+            .mapToObj(i -> new Pair<>(i, reader.getArgb(i % width, i / width)))
+            .map(pair -> new Pair<>(pair.getKey(), bits[pair.getKey()] ? pair.getValue() | 1 : pair.getValue() & ~1))
             .forEach(pair -> {
                 int x = pair.getKey() % width;
                 int y = pair.getKey() / width;
@@ -31,24 +31,24 @@ public class BasicEncoder{
         return copy;
     }
 
-    private boolean [] encodeImage(String message){
+    private boolean[] encodeImage(String message) {
         byte[] data = message.getBytes();
         boolean[] bits = new boolean[32 + data.length * 8];
         //encode length of message
         String binary = Integer.toBinaryString(data.length);
-        while(binary.length() < 32){
+        while (binary.length() < 32) {
             binary = "0" + binary;
         }
 
-        for(int i = 0; i < 32; i ++){
+        for (int i = 0; i < 32; i++) {
             bits[i] = binary.charAt(i) == '1';
         }
 
-        for(int i = 0; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             byte b = data[i];
 
-            for(int j = 0; j < 8; j ++){
-                bits[32 + i * 8 + j] = ((b >> (7 - j))& 1)==1;
+            for (int j = 0; j < 8; j++) {
+                bits[32 + i * 8 + j] = ((b >> (7 - j)) & 1) == 1;
             }
         }
 
