@@ -32,6 +32,7 @@ buildscript {
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
         classpath "com.google.googlejavaformat:google-java-format:1.5"
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+        classpath 'org.xerial:sqlite-jdbc:3.21.0.1'
     }
 }
 
@@ -54,7 +55,8 @@ repositories {
 //Separate test compile dependancies
 dependencies {
     testCompile(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+            'org.junit.jupiter:junit-jupiter-api:5.1.0',
+            'org.xerial:sqlite-jdbc:3.21.0.1'
     )
     testRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0'
@@ -63,8 +65,9 @@ dependencies {
 
 //separate compile dependencies
 dependencies {
-    compile("org.controlsfx:controlsfx:9.0.0")
+    //compile("org.controlsfx:controlsfx:9.0.0")
     compile 'com.google.googlejavaformat:google-java-format:1.5'
+    compile 'org.xerial:sqlite-jdbc:3.21.0.1'
 }
 
 //set wrapper to 4.6
