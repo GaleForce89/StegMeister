@@ -24,11 +24,9 @@ public class Encrypt extends Cryptography {
      * Default constructor to null
      */
     //public Encrypt() throws NoSuchAlgorithmException, NoSuchPaddingException {
-   //     super();
+    //     super();
     //}
-
-
-    public String Crypt(String msg, String test){
+    public String Crypt(String msg, String test) {
         /*
         Heavy work in progress, going to take in strings, create more methods and convert the strings to bytes,
         from there at the end convert bytes to strings to keep things easy on the ui side.
@@ -49,7 +47,7 @@ public class Encrypt extends Cryptography {
      * Generate a random secret key
      *
      * @return Random secret key
-     * @throws NoSuchAlgorithmException
+     * @throws InvalidParameterException
      */
     public SecretKey genKey(int keySize) throws InvalidParameterException {
 
@@ -73,8 +71,8 @@ public class Encrypt extends Cryptography {
     }
 
     public void setKeyRand() {
-             this.key = genKey(keySize);
-        }
+        this.key = genKey(keySize);
+    }
 
 
 }

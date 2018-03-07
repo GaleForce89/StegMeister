@@ -1,13 +1,18 @@
 /**
- * <h1>StegMeister</h1><br>
- *     StegMeister, hidden opportunities <br><br>
- *         <strong>Features include:</strong><br><br>
- *             <ul>
- *                 <li>Hidden messages</li>
- *                 <li>Encrypted backend</li>
- *                 <li>Key generation</li>
- *                 <li>Fancy UI</li>
- *             </ul>
+ * <h1>StegMeister</h1>
+ * <p>
+ * <br>
+ * StegMeister, hidden opportunities <br>
+ * <br>
+ * <strong>Features include:</strong><br>
+ * <br>
+ * <p>
+ * <ul>
+ * <li>Hidden messages
+ * <li>Encrypted backend
+ * <li>Key generation
+ * <li>Fancy UI
+ * </ul>
  *
  * @author Zachary Gale
  * @author Chris Waterman
@@ -16,7 +21,6 @@
  * @version 0.1 (Current version number)
  * @since 0.1 (The version that the class was first added to the project)
  */
-
 package Steg;
 
 import javafx.application.Application;
@@ -37,19 +41,7 @@ import java.io.StringWriter;
 
 public class StegMeister extends Application {
 
-    private static Stage pStage; //primary stage
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
-        setPrimaryStage(primaryStage);
-        Parent root = FXMLLoader.load(getClass().getResource("Interface/UI.fxml"));
-        primaryStage.setTitle("StegMeister");
-        primaryStage.getIcons().add(new Image(StegMeister.class.getResourceAsStream("icons/main_icon.png")));
-        primaryStage.setScene(new Scene(root, 800, 600));
-        primaryStage.show();
-    }
-
+    private static Stage pStage; // primary stage
 
     public static void main(String[] args) {
         launch(args);
@@ -61,7 +53,6 @@ public class StegMeister extends Application {
             showErrorDialog(e);
         } else {
             System.err.println("An unexpected error occurred in " + t);
-
         }
     }
 
@@ -73,7 +64,7 @@ public class StegMeister extends Application {
         alert.setResizable(true);
         alert.initOwner(getPrimaryStage());
 
-// Create expandable Exception.
+        // Create expandable Exception.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
@@ -96,18 +87,31 @@ public class StegMeister extends Application {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-// Set expandable Exception into the dialog pane.
+        // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
         alert.getDialogPane().setPrefWidth(600);
-        
 
         alert.showAndWait();
     }
+
     public static Stage getPrimaryStage() {
         return pStage;
     }
 
     private void setPrimaryStage(Stage pStage) {
         StegMeister.pStage = pStage;
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
+        setPrimaryStage(primaryStage);
+        Parent root = FXMLLoader.load(getClass().getResource("/Interface/UI.fxml"));
+        primaryStage.setTitle("StegMeister");
+        primaryStage
+            .getIcons()
+            .add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.show();
     }
 }

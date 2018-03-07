@@ -1,0 +1,127 @@
+//appply application and java up top to ease creation of gradle build
+apply plugin: 'java'
+apply plugin: 'application'
+
+//main class for running and variables
+mainClassName = 'Steg.StegMeister'
+group 'StegMeister' //group name
+version = '1.0' //version number
+sourceCompatibility = 9 //java source version
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
+        maven {
+            url 'https://mvnrepository.com/artifact/junit/junit'
+        }
+        maven {
+            url "https://mvnrepository.com/artifact/org.controlsfx/controlsfx"
+        }
+        mavenCentral()
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        //classpath "gradle.plugin.no.tornado:fxlauncher-gradle-plugin:1.0.16" //add if useful
+        classpath "org.controlsfx:controlsfx:9.0.0"
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
+        classpath "com.google.googlejavaformat:google-java-format:1.5"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+    }
+}
+
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'checkstyle'
+
+//add later if useful
+//apply plugin: 'no.tornado.fxlauncher'
+//apply plugin: 'findbugs'
+
+//Must be added after plugins keep above compile and test
+repositories {
+    mavenCentral()
+}
+
+//Separate test compile dependancies
+dependencies {
+    testCompile(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntime(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+}
+
+//separate compile dependencies
+dependencies {
+    compile("org.controlsfx:controlsfx:9.0.0")
+    compile 'com.google.googlejavaformat:google-java-format:1.5'
+}
+
+//set wrapper to 4.6
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}
+
+//configure the jar file
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'StegMeister',
+                   'Implementation-Version': version,
+                   'Main-Class': 'Steg.StegMeister'
+    }
+}
+
+//configure our test task for junit
+test {
+    // enable JUnit Platform (a.k.a. JUnit 5) support
+    useJUnitPlatform()
+
+    // set a system property for the test JVM(s)
+   // systemProperty 'some.prop', 'value'
+
+    // explicitly include or exclude tests
+    //include 'org/foo/**'
+    //exclude 'org/boo/**'
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=512'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = false
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
+}
+
+//configure javadoc
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
+    // if not changed the destinationDir, the javadoc for production code is overridden.
+    destinationDir = file("/docs/javadoc")
+    title = "StegMeister"
+}
