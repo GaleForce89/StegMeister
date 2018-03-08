@@ -1,4 +1,4 @@
-//appply application and java up top to ease creation of gradle build
+//apply application and java up top to ease creation of gradle build
 apply plugin: 'java'
 apply plugin: 'application'
 
