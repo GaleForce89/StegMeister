@@ -131,3 +131,10 @@ javadoc {
     destinationDir = file("/docs/javadoc")
     title = "StegMeister"
 }
+
+//checkstyle
+checkstyle {
+    configFile rootProject.file('checkstyle.xml')
+    ignoreFailures false
+    showViolations true
+}
