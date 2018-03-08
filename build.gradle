@@ -1,12 +1,15 @@
 //apply application and java up top to ease creation of gradle build
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'java-library'
 
 //main class for running and variables
 mainClassName = 'Steg.StegMeister'
 group 'StegMeister' //group name
 version = '1.0' //version number
 sourceCompatibility = 9 //java source version
+targetCompatibility = 9 //target jdk 8 needed for pmd
 
 buildscript {
     repositories {
@@ -21,6 +24,9 @@ buildscript {
         }
         maven {
             url "https://mvnrepository.com/artifact/org.controlsfx/controlsfx"
+        }
+        maven {
+            url "https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd"
         }
         mavenCentral()
         jcenter()
@@ -37,11 +43,11 @@ buildscript {
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: 'maven'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 
 
 //add later if useful
@@ -67,7 +73,6 @@ dependencies {
 
 //separate compile dependencies
 dependencies {
-    //compile("org.controlsfx:controlsfx:9.0.0")
     compile 'com.google.googlejavaformat:google-java-format:1.5'
     compile 'org.xerial:sqlite-jdbc:3.21.0.1'
     compile 'org.controlsfx:controlsfx:9.0.0'
@@ -134,7 +139,42 @@ javadoc {
 
 //checkstyle
 checkstyle {
+    toolVersion = "8.8"
     configFile rootProject.file('checkstyle.xml')
     ignoreFailures false
     showViolations true
+}
+
+//pmd
+pmd {
+    toolVersion = "6.1.0"
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSets = [
+            'java-basic',
+            'java-braces',
+            'java-clone',
+            'java-codesize',
+            'java-comments',
+            'java-controversial',
+            'java-design',
+            'java-empty',
+            'java-finalizers',
+            'java-imports',
+            'java-j2ee',
+            'java-javabeans',
+            'java-junit',
+            'java-logging-jakarta-commons',
+            'java-logging-java',
+            'java-migrating',
+            'java-naming',
+            'java-optimizations',
+            'java-strictexception',
+            'java-strings',
+            'java-sunsecure',
+            'java-typeresolution',
+            'java-unnecessary',
+            'java-unusedcode'
+    ]
 }
