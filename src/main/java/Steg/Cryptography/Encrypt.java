@@ -44,7 +44,7 @@ public class Encrypt extends Cryptography {
   public SecretKey genKey(int keySize) throws InvalidParameterException {
 
     try {
-      // throw exceptiopn if key size is to large
+      // throw exception if key size is too large
       if (Cipher.getMaxAllowedKeyLength("AES") < keySize) {
         // unlimited crypto is not installed
         throw new InvalidParameterException(
