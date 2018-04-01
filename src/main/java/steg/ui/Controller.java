@@ -78,7 +78,7 @@ public class Controller extends StegMeister {
     catch(SQLException e){
       System.out.println(e.getMessage());
     }
-    ******************************************
+    *******************************************
     * ADD above code into new button, it causes an exception and needs to be isolated
     */
     System.out.println(Ciph.Encrypt.maxKeySize());
