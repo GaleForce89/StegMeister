@@ -53,6 +53,7 @@ public class Encrypt extends Cryptography {
 
       KeyGenerator keyGen = KeyGenerator.getInstance("AES");
       keyGen.init(keySize);
+      
 
       return keyGen.generateKey();
     } catch (final NoSuchAlgorithmException e) {
