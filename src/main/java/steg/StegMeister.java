@@ -25,7 +25,7 @@
  * @version 0.1 (Current version number)
  * @since 0.1 (The version that the class was first added to the project)
  */
-package Steg;
+package steg;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -129,7 +129,7 @@ public class StegMeister extends Application {
   public void start(Stage primaryStage) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
     setPrimaryStage(primaryStage);
-    Parent root = FXMLLoader.load(getClass().getResource("/Interface/UI.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("/ui/UI.fxml"));
     primaryStage.setTitle("StegMeister");
     primaryStage
         .getIcons()

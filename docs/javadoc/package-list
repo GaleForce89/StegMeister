@@ -1,4 +1,4 @@
-Steg
-Steg.Cryptography
-Steg.Interface
-Steg.Steganography
+steg
+steg.cryptography
+steg.ui
+steg.steganography

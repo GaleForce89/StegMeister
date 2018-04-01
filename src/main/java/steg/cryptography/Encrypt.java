@@ -1,4 +1,4 @@
-package Steg.Cryptography;
+package steg.cryptography;
 
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -9,8 +9,6 @@ import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import javax.crypto.spec.IvParameterSpec;
 import java.util.Arrays;
-import java.lang.StringBuffer;
-
 
 
 /** The encrypt class is used for all things encryption, to include key generation. */

@@ -1,4 +1,4 @@
-package Steg.Steganography;
+package steg.steganography;
 
 public class Model {
   public BasicEncoder encoder;

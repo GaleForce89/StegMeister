@@ -1,4 +1,4 @@
-package Steg.Cryptography;
+package steg.cryptography;
 
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.NoSuchPaddingException;
