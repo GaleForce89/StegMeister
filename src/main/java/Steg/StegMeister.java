@@ -29,6 +29,8 @@ package Steg;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.DriverManager;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -41,13 +43,31 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import java.sql.*;
 
 public class StegMeister extends Application {
 
   private static Stage pStage; // primary stage
 
   public static void main(String[] args) {
-    launch(args);
+      //create new DB file structure if doesn't exist
+      createNewDB("test.db");
+      launch(args);
+  }
+
+  public static void createNewDB(String fName){
+      //connect to DB
+      String url = "jdbc:sqlite:C:/SQLite/db/" + fName;
+
+      try(Connection conn = DriverManager.getConnection(url)){
+          if(conn != null){
+              DatabaseMetaData meta = conn.getMetaData(); //get metadata if db exists
+              System.out.println("the driver name is " + meta.getDriverName());
+              System.out.println("New Database created successfully.");
+          }
+      }catch(SQLException e){
+            System.out.println(e.getMessage());
+      }
   }
 
   private static void showError(Thread t, Throwable e) {
