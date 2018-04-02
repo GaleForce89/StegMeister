@@ -28,6 +28,12 @@ buildscript {
         maven {
             url "https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd"
         }
+        maven {
+            url "https://jitpack.io"
+        }
+        maven {
+            url "http://dl.bintray.com/typesafe/maven-releases"
+        }
         mavenCentral()
         jcenter()
         mavenLocal()
@@ -44,6 +50,7 @@ buildscript {
         classpath 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
         classpath 'com.github.spotbugs:spotbugs-annotations:3.1.2'
         classpath "commons-codec:commons-codec:1.11"
+        classpath "com.github.codacy:codacy-coverage-reporter:-SNAPSHOT"
     }
 }
 
@@ -55,6 +62,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply plugin: 'com.github.sherter.google-java-format'
 apply plugin: "com.github.spotbugs"
+apply plugin: "jacoco"
 
 
 
@@ -224,4 +232,41 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
         xml.enabled = false
         html.enabled = true
     }
+}
+
+//jacoco
+jacoco {
+    toolVersion = "0.8.1"
+      reportsDir = file("$buildDir/reports/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+       // html.destination file("${buildDir}/reports/jacoco")
+    }
+}
+
+//codacy coverage
+configurations { codacy }
+repositories {
+    maven { url "https://jitpack.io" }
+    maven { url "http://dl.bintray.com/typesafe/maven-releases" }
+}
+dependencies {
+    codacy 'com.github.codacy:codacy-coverage-reporter:-SNAPSHOT'
+}
+task sendCoverageToCodacy(type: JavaExec, dependsOn: jacocoTestReport) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "report",
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/reports/jacoco/test/jacocoTestReport.xml",
+            "--project-token",
+            "64babb1d7f34490d88776e90983c5c05"
+    ]
 }
