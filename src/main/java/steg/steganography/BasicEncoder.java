@@ -1,4 +1,4 @@
-package Steg.Steganography;
+package steg.steganography;
 
 import java.util.stream.IntStream;
 import javafx.scene.image.Image;

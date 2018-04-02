@@ -1,10 +1,10 @@
-package Steg.Interface;
+package steg.ui;
 
 // Import required packages for javafx
 
-import Steg.Cryptography.Ciph;
-import Steg.StegMeister;
-import Steg.Steganography.Model;
+import steg.cryptography.Ciph;
+import steg.StegMeister;
+import steg.steganography.Model;
 import java.security.NoSuchAlgorithmException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -64,6 +64,7 @@ public class Controller extends StegMeister {
     Ciph.Encrypt.setKeyRand();
     Ciph.Encrypt.saveKey("saved.key");
     //insert key into database
+    /*
     String sql = "INSERT INTO keys(key) VALUES(?)";
     //check connection
     try(Connection conn = this.connect();
@@ -77,6 +78,9 @@ public class Controller extends StegMeister {
     catch(SQLException e){
       System.out.println(e.getMessage());
     }
+    *******************************************
+    * ADD above code into new button, it causes an exception and needs to be isolated
+    */
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output

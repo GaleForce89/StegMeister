@@ -1,4 +1,4 @@
-package Steg.Cryptography;
+package steg.cryptography;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
