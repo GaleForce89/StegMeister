@@ -2,9 +2,9 @@ package steg.ui;
 
 // Import required packages for javafx
 
-import steg.Connect;
+import steg.database.Connect;
 import steg.cryptography.Ciph;
-import steg.InsertData;
+import steg.database.InsertData;
 import steg.StegMeister;
 import steg.steganography.Model;
 import java.security.NoSuchAlgorithmException;

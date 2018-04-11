@@ -43,6 +43,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import steg.database.Connect;
+import steg.database.CreateDB;
+import steg.database.CreateTable;
+import steg.database.InsertData;
 import java.sql.*;
 
 public class StegMeister extends Application {
