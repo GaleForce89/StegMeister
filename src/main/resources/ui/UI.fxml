@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141"
-      fx:controller="Steg.Interface.Controller">
+      fx:controller="steg.ui.Controller">
     <children>
-        <TextArea fx:id="test1" editable="false" text="Steg Test Windows">
+        <TextArea fx:id="test1" editable="false" text="steg Test Windows">
             <VBox.margin>
                 <Insets bottom="5.0"/>
             </VBox.margin>
@@ -31,7 +31,7 @@
                                 <Insets bottom="10.0" left="20.0" top="10.0"/>
                             </HBox.margin>
                             <image>
-                                <Image url="@../SampleImages/White_Cliffs_of_Dover_02.JPG"/>
+                                <Image url="@../sampleimages/White_Cliffs_of_Dover_02.JPG"/>
                             </image>
                         </ImageView>
                         <ImageView fx:id="imga" fitHeight="236.0" fitWidth="309.0" pickOnBounds="true"

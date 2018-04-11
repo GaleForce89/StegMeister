@@ -1,17 +1,16 @@
-package Steg.Interface;
+package steg.ui;
 
 // Import required packages for javafx
 
-import Steg.Connect;
-import Steg.Cryptography.Ciph;
-import Steg.InsertData;
-import Steg.StegMeister;
-import Steg.Steganography.Model;
+import steg.Connect;
+import steg.cryptography.Ciph;
+import steg.InsertData;
+import steg.StegMeister;
+import steg.steganography.Model;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.crypto.NoSuchPaddingException;
+import java.sql.*;
 
 public class Controller extends StegMeister {
   private Ciph Ciph;
@@ -68,6 +68,24 @@ public class Controller extends StegMeister {
     // sMsg = cryptotest.Crypt(msg, key);
     Ciph.Encrypt.setKeyRand();
     Ciph.Encrypt.saveKey("saved.key");
+    //insert key into database
+    /*
+    String sql = "INSERT INTO keys(key) VALUES(?)";
+    //check connection
+    try(Connection conn = this.connect();
+        //prepare query
+        PreparedStatement pstmnt = conn.prepareStatement(sql)) {
+      pstmnt.setString(1, Ciph.Encrypt.toString());
+      //execute statement
+      pstmnt.executeUpdate();
+      System.out.println("key successfully uploaded to database");
+    }
+    catch(SQLException e){
+      System.out.println(e.getMessage());
+    }
+    //*******************************************
+    //* ADD above code into new button, it causes an exception and needs to be isolated
+    */
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output
@@ -81,11 +99,11 @@ public class Controller extends StegMeister {
       }
   }
 
-  /*
-  public void setImgb(){ //example set image
-     imgb.setImage(imagee);
-  }
-  */
+    /*
+    public void setImgb(){ //example set image
+       imgb.setImage(imagee);
+    }
+    */
   public void onEncode() {
     Image modified = model.encoder.encodeImage(imgb.getImage(), test2input.getText());
     imga.setImage(modified);

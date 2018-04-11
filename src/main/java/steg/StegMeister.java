@@ -25,10 +25,12 @@
  * @version 0.1 (Current version number)
  * @since 0.1 (The version that the class was first added to the project)
  */
-package Steg;
+package steg;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.DriverManager;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +43,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import java.sql.*;
 
 public class StegMeister extends Application {
 
@@ -55,7 +58,28 @@ public class StegMeister extends Application {
     createT.createNewTable();
     InsertData insertDOBJ = new InsertData();
     launch(args);
+
+      //create new DB file structure if doesn't exist
+      //createNewDB("test.db");
+      //launch(args);
   }
+
+  /*
+  public static void createNewDB(String fName){
+      //connect to DB
+      String url = "jdbc:sqlite:C:/SQLite/db/" + fName;
+
+      try(Connection conn = DriverManager.getConnection(url)){
+          if(conn != null){
+              DatabaseMetaData meta = conn.getMetaData(); //get metadata if db exists
+              System.out.println("the driver name is " + meta.getDriverName());
+              System.out.println("New Database created successfully.");
+          }
+      }catch(SQLException e){
+            System.out.println(e.getMessage());
+      }
+  }
+  */
 
   private static void showError(Thread t, Throwable e) {
     System.err.println("***Default exception handler***");
@@ -116,7 +140,7 @@ public class StegMeister extends Application {
   public void start(Stage primaryStage) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
     setPrimaryStage(primaryStage);
-    Parent root = FXMLLoader.load(getClass().getResource("/Interface/UI.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("/ui/UI.fxml"));
     primaryStage.setTitle("StegMeister");
     primaryStage
         .getIcons()

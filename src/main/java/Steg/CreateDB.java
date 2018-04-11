@@ -1,4 +1,4 @@
-package Steg;
+package steg;
 import java.sql.*;
 import java.util.*;
 
