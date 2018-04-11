@@ -43,6 +43,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import steg.database.Connect;
+import steg.database.CreateDB;
+import steg.database.CreateTable;
+import steg.database.InsertData;
 import java.sql.*;
 
 public class StegMeister extends Application {
@@ -50,11 +54,21 @@ public class StegMeister extends Application {
   private static Stage pStage; // primary stage
 
   public static void main(String[] args) {
+    Connect connObj = new Connect();
+    connObj.connect();
+    CreateDB DBObj = new CreateDB();
+    DBObj.createNewDB("dbKeys.db");
+    CreateTable createT = new CreateTable();
+    createT.createNewTable();
+    InsertData insertDOBJ = new InsertData();
+    launch(args);
+
       //create new DB file structure if doesn't exist
-      createNewDB("test.db");
-      launch(args);
+      //createNewDB("test.db");
+      //launch(args);
   }
 
+  /*
   public static void createNewDB(String fName){
       //connect to DB
       String url = "jdbc:sqlite:C:/SQLite/db/" + fName;
@@ -69,6 +83,7 @@ public class StegMeister extends Application {
             System.out.println(e.getMessage());
       }
   }
+  */
 
   private static void showError(Thread t, Throwable e) {
     System.err.println("***Default exception handler***");
