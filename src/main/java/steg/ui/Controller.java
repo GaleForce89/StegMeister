@@ -2,10 +2,15 @@ package steg.ui;
 
 // Import required packages for javafx
 
+import steg.database.Connect;
 import steg.cryptography.Ciph;
+import steg.database.InsertData;
 import steg.StegMeister;
 import steg.steganography.Model;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,7 +41,7 @@ public class Controller extends StegMeister {
   }
 
   @FXML
-  public void test1btn() throws NoSuchAlgorithmException {
+  public void test1btn() throws NoSuchAlgorithmException, SQLException {
 
     // display error if the input is empty **update when we add keys**
     if (test1input.getText().trim().isEmpty()) {
@@ -78,24 +83,21 @@ public class Controller extends StegMeister {
     catch(SQLException e){
       System.out.println(e.getMessage());
     }
-    *******************************************
-    * ADD above code into new button, it causes an exception and needs to be isolated
+    //*******************************************
+    //* ADD above code into new button, it causes an exception and needs to be isolated
     */
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output
+    Connect connObj = new Connect();
+    connObj.connect();
+    InsertData insertDOBJ = new InsertData();
+      try {
+          insertDOBJ.insert_Key(Ciph.Encrypt.getKey().toString(), "fill4Now");
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
   }
-    //connection object for database
-    private Connection connect() {
-        String url = "jdbc:sqlite:C://SQLite/db/testDB.db";
-        Connection conn = null;
-        try{
-            conn = DriverManager.getConnection(url);
-        }catch(SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
-    }
 
     /*
     public void setImgb(){ //example set image

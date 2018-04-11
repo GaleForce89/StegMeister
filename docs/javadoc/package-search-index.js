@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"steg"},{"l":"steg.cryptography"},{"l":"steg.ui"},{"l":"steg.steganography"}]
+packageSearchIndex = [{"l":"steg"},{"l":"steg.cryptography"},{"l":"steg.steganography"},{"l":"steg.ui"}]
