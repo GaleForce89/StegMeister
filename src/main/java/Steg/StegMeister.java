@@ -47,6 +47,13 @@ public class StegMeister extends Application {
   private static Stage pStage; // primary stage
 
   public static void main(String[] args) {
+    Connect connObj = new Connect();
+    connObj.connect();
+    CreateDB DBObj = new CreateDB();
+    DBObj.createNewDB("dbKeys.db");
+    CreateTable createT = new CreateTable();
+    createT.createNewTable();
+    InsertData insertDOBJ = new InsertData();
     launch(args);
   }
 

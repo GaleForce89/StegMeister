@@ -2,10 +2,16 @@ package Steg.Interface;
 
 // Import required packages for javafx
 
+import Steg.Connect;
 import Steg.Cryptography.Ciph;
+import Steg.InsertData;
 import Steg.StegMeister;
 import Steg.Steganography.Model;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -35,7 +41,7 @@ public class Controller extends StegMeister {
   }
 
   @FXML
-  public void test1btn() throws NoSuchAlgorithmException {
+  public void test1btn() throws NoSuchAlgorithmException, SQLException {
 
     // display error if the input is empty **update when we add keys**
     if (test1input.getText().trim().isEmpty()) {
@@ -65,6 +71,14 @@ public class Controller extends StegMeister {
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output
+    Connect connObj = new Connect();
+    connObj.connect();
+    InsertData insertDOBJ = new InsertData();
+      try {
+          insertDOBJ.insert_Key(Ciph.Encrypt.getKey().toString(), "fill4Now");
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
   }
 
   /*
