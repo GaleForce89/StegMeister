@@ -2,6 +2,9 @@ package steg.ui;
 
 // Import required packages for javafx
 
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 import steg.database.Connect;
 import steg.cryptography.Ciph;
 import steg.database.InsertData;
@@ -18,6 +21,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.crypto.NoSuchPaddingException;
+import com.jfoenix.controls.JFXButton;
+import org.controlsfx.control.StatusBar;
+
 import java.sql.*;
 
 public class Controller extends StegMeister {
@@ -33,6 +39,41 @@ public class Controller extends StegMeister {
   @FXML private javafx.scene.control.TextField test3input;
   @FXML private ImageView imgb = new ImageView(); // before
   @FXML private ImageView imga = new ImageView(); // after
+
+  //panes to control main ui
+  @FXML private Pane key_pane;
+
+  @FXML private TabPane about_pane;
+
+  @FXML private JFXButton key_btn;
+
+  //jfxbuttons to control panes
+  //@FXML
+  //private JFXButton key_btn, about_btn;
+
+  //actions for menu buttons*********
+
+  /**
+   * Set the key pane to be visible, as well change background color.
+   */
+  @FXML
+  public void setKey_pane() {
+    //key_pane.toFront(); **Seems visibility suits our needs better than bring to front.
+    //keep the comment for later optimizations if better way found.
+    //Set the visibility of panes.
+    key_pane.visibleProperty().set(true);
+    about_pane.visibleProperty().set(false);
+
+    //adjust the background colors of buttons
+    key_btn.setStyle("-fx-background-color: f4f4f4"); //activate key_pane
+  }
+
+  @FXML
+  public void setAbout_pane(){
+    about_pane.visibleProperty().set(true);
+    key_pane.visibleProperty().set(false);
+  }
+
 
   public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
     this.Ciph = new Ciph(); // initialize new ciph

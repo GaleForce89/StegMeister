@@ -144,7 +144,7 @@ public class StegMeister extends Application {
   public void start(Stage primaryStage) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
     setPrimaryStage(primaryStage);
-    Parent root = FXMLLoader.load(getClass().getResource("/ui/UI.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("/ui/Main.fxml"));
     primaryStage.setTitle("StegMeister");
     primaryStage
         .getIcons()
