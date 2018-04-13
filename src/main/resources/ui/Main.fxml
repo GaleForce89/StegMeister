@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.StatusBar?>
+
+
+<AnchorPane prefHeight="490.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steg.ui.Controller">
+   <children>
+      <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" stylesheets="@MenuPane.css">
+                     <children>
+                        <JFXButton fx:id="key_btn" onAction="#setKey_pane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗝" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Key manager">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" text="🔒" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Encrypt message">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🔓" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Decrypt message">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📝" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Hide plain text">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📰" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Reveal plain text">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="about_btn" onAction="#setAbout_pane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗣" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="About">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </JFXButton>
+                        <AnchorPane style="-fx-background-color: #eaf8ff;" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <AnchorPane VBox.vgrow="ALWAYS">
+                           <children>
+                              <Pane fx:id="key_pane" layoutY="231.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox layoutX="103.0" layoutY="45.0">
+                                       <children>
+                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <TabPane fx:id="about_pane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab text="About">
+                                    <content>
+                                      <AnchorPane>
+                                             <children>
+                                                <VBox layoutX="234.0" layoutY="207.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <HBox VBox.vgrow="ALWAYS">
+                                                         <children>
+                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Steg Meister v1.0&#10;&#10;Target JDK 9.0.4&#10;&#10;Github: https://github.com/GaleForce89/StegMeister" wrapText="true" HBox.hgrow="ALWAYS">
+                                                               <HBox.margin>
+                                                                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </TextArea>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab text="Credits">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <HBox VBox.vgrow="ALWAYS">
+                                                         <children>
+                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Special thanks to:&#10;&#10;Intellij (student developer)&#10;Github&#10;The git team&#10;Apache commons codec team&#10;JFoenix&#10;ControlxFX&#10;FontAwsomeFX&#10;Gradle project&#10;&#10;&amp; The OpenSource community for making this project possible." wrapText="true" HBox.hgrow="ALWAYS">
+                                                               <HBox.margin>
+                                                                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </TextArea>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <StatusBar>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </StatusBar>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
