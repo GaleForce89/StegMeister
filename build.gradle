@@ -9,7 +9,7 @@ mainClassName = 'steg.StegMeister'
 group 'StegMeister' //group name
 version = '1.0' //version number
 sourceCompatibility = 9 //java source version
-targetCompatibility = 9 //target jdk 8 needed for pmd
+targetCompatibility = 9 //target jdk 9 needed for pmd
 
 buildscript {
     repositories {
