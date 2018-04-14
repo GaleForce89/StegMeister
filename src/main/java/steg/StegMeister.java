@@ -29,8 +29,7 @@ package steg;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.DriverManager;
-
+import java.sql.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -47,7 +46,6 @@ import steg.database.Connect;
 import steg.database.CreateDB;
 import steg.database.CreateTable;
 import steg.database.InsertData;
-import java.sql.*;
 
 public class StegMeister extends Application {
 
@@ -63,9 +61,9 @@ public class StegMeister extends Application {
     InsertData insertDOBJ = new InsertData();
     launch(args);
 
-      //create new DB file structure if doesn't exist
-      //createNewDB("test.db");
-      //launch(args);
+    // create new DB file structure if doesn't exist
+    // createNewDB("test.db");
+    // launch(args);
   }
 
   /*
