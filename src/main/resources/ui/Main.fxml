@@ -8,11 +8,9 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.StatusBar?>
-
 
 <AnchorPane prefHeight="490.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steg.ui.Controller">
    <children>
@@ -22,7 +20,7 @@
                <children>
                   <VBox alignment="CENTER" stylesheets="@MenuPane.css">
                      <children>
-                        <JFXButton fx:id="key_btn" onAction="#setKey_pane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗝" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="keyMenu" onAction="#setKeyPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗝" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -34,7 +32,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" text="🔒" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="encryptMenu" onAction="#setEncryptPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🔒" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -46,7 +44,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🔓" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="decryptMenu" onAction="#setDecryptPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🔓" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -58,7 +56,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📝" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="plainMenu" onAction="#setPlainPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📝" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -70,7 +68,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <JFXButton prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📰" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="revealMenu" onAction="#setRevealPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="📰" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -82,7 +80,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <JFXButton fx:id="about_btn" onAction="#setAbout_pane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗣" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="aboutMenu" onAction="#setAboutPane" prefWidth="116.0" ripplerFill="#615a5a" styleClass="JFXbutton" stylesheets="@MenuPane.css" text="🗣" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -104,16 +102,52 @@
                      <children>
                         <AnchorPane VBox.vgrow="ALWAYS">
                            <children>
-                              <Pane fx:id="key_pane" layoutY="231.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="keyPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox layoutX="103.0" layoutY="45.0">
+                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
                                        </children>
                                     </VBox>
                                  </children>
-                              </Pane>
-                              <TabPane fx:id="about_pane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              </AnchorPane>
+                              <AnchorPane fx:id="encryptPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="decryptPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="plainPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="revealPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <TabPane fx:id="aboutPane" tabClosingPolicy="UNAVAILABLE" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <tabs>
                                   <Tab text="About">
                                     <content>

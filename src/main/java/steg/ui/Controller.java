@@ -1,36 +1,55 @@
 package steg.ui;
 
-// Import required packages for javafx
+//Import required packages
 
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
-import steg.database.Connect;
-import steg.cryptography.Ciph;
-import steg.database.InsertData;
-import steg.StegMeister;
-import steg.steganography.Model;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javax.crypto.NoSuchPaddingException;
 import com.jfoenix.controls.JFXButton;
-import org.controlsfx.control.StatusBar;
-
-import java.sql.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import steg.StegMeister;
+import steg.cryptography.Ciph;
+import steg.steganography.Model;
+import javax.crypto.NoSuchPaddingException;
+import java.security.NoSuchAlgorithmException;
+//import org.controlsfx.control.StatusBar;
+//import javafx.scene.control.Alert;
+//import javafx.scene.control.Alert.AlertType;
+//import javafx.scene.control.TextArea;
+//import javafx.scene.image.Image;
+//import javafx.scene.image.ImageView;
+//import java.sql.*;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
+//import steg.database.InsertData;
+//import javafx.scene.layout.Pane;
+//import steg.database.Connect;
+//import javafx.scene.control.Tab;
 
 public class Controller extends StegMeister {
+  /**
+   * Private ciph for encryption/decryption.
+   */
   private Ciph Ciph;
+
+  /**
+   * Private model for encoder/decoder.
+   */
   private Model model;
-  // Image imagee = new
-  // Image("https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/White_Cliffs_of_Dover_02.JPG/450px-White_Cliffs_of_Dover_02.JPG");
+
+  /**
+   * Default controller constructor.
+   * @throws NoSuchPaddingException If padding DNE.
+   * @throws NoSuchAlgorithmException if algo DNE.
+   */
+  public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    this.Ciph = new Ciph(); // initialize new ciph
+    this.model = new Model();
+    // this.model = model;
+  }
+
+  //TEST UI CODE
+  /*
   @FXML private javafx.scene.control.TextArea test1; // text areas
   @FXML private javafx.scene.control.TextArea test2;
   @FXML private javafx.scene.control.TextArea test3;
@@ -39,48 +58,131 @@ public class Controller extends StegMeister {
   @FXML private javafx.scene.control.TextField test3input;
   @FXML private ImageView imgb = new ImageView(); // before
   @FXML private ImageView imga = new ImageView(); // after
+  */
 
+  /**
+   * The anchor panes for key, encrypt, decrypt, plain text, and reveal panes.
+   */
+  @FXML private AnchorPane keyPane, encryptPane, decryptPane, plainPane, revealPane;
   //panes to control main ui
-  @FXML private Pane key_pane;
 
-  @FXML private TabPane about_pane;
+  /**
+   * The tabpane for credits/about pane.
+   */
+  @FXML private TabPane aboutPane;
+  //tabpane is different than anchor
 
-  @FXML private JFXButton key_btn;
-
-  //jfxbuttons to control panes
-  //@FXML
-  //private JFXButton key_btn, about_btn;
-
-  //actions for menu buttons*********
+  /**
+   * Names assigned to menu buttons.
+   */
+  @FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
+  //bring in jfx buttons for menu
 
   /**
    * Set the key pane to be visible, as well change background color.
    */
-  @FXML
-  public void setKey_pane() {
+  @FXML //set fxml for methods below.
+  public void setKeyPane() {
     //key_pane.toFront(); **Seems visibility suits our needs better than bring to front.
     //keep the comment for later optimizations if better way found.
     //Set the visibility of panes.
-    key_pane.visibleProperty().set(true);
-    about_pane.visibleProperty().set(false);
+    keyPane.visibleProperty().set(true); //visible
+    encryptPane.visibleProperty().set(false); ///hidden
+    decryptPane.visibleProperty().set(false);
+    plainPane.visibleProperty().set(false);
+    revealPane.visibleProperty().set(false);
+    aboutPane.visibleProperty().set(false);
 
-    //adjust the background colors of buttons
-    key_btn.setStyle("-fx-background-color: f4f4f4"); //activate key_pane
+    //adjust the background colors of buttons to match ui
+    //possibly figure out more mouse events to handle this. Or a new active method.
+    //keyMenu.getStyleClass().add("JFXbutton-selected"); //activate keyMenu
+    //encryptMenu.getStyleClass().add("JFXbutton-inactive");
+    //decryptMenu.getStyleClass().add("JFXbutton-inactive");
+    //plainMenu.getStyleClass().add("JFXbutton-inactive");
+    //revealMenu.getStyleClass().add("JFXbutton-inactive");
+    //aboutMenu.getStyleClass().add("JFXbutton-inactive");
+   // keyMenu.getStyleClass().add("JFXbutton-selected"); //activate keyMenu
   }
 
-  @FXML
-  public void setAbout_pane(){
-    about_pane.visibleProperty().set(true);
-    key_pane.visibleProperty().set(false);
+  /**
+   * Set the encrypt pane to visible.
+   */
+  public void setEncryptPane(){
+    //Set the visibility of panes.
+    keyPane.visibleProperty().set(false);
+    encryptPane.visibleProperty().set(true);
+    decryptPane.visibleProperty().set(false);
+    plainPane.visibleProperty().set(false);
+    revealPane.visibleProperty().set(false);
+    aboutPane.visibleProperty().set(false);
+
+
+    //adjust the background colors of buttons to match ui
+    //encryptMenu.getStyleClass().add("JFXbutton-selected");
+    //keyMenu.getStyleClass().add("JFXbutton-inactive");
+   // decryptMenu.getStyleClass().add("JFXbutton-inactive");
+  //  plainMenu.getStyleClass().add("JFXbutton-inactive");
+ //   revealMenu.getStyleClass().add("JFXbutton-inactive");
+//    aboutMenu.getStyleClass().add("JFXbutton-inactive");
+ }
+
+  /**
+   * Set decrypt pane to be visible.
+   */
+  public void setDecryptPane() {
+    //Set the visibility of panes.
+    keyPane.visibleProperty().set(false);
+    encryptPane.visibleProperty().set(false);
+    decryptPane.visibleProperty().set(true);
+    plainPane.visibleProperty().set(false);
+    revealPane.visibleProperty().set(false);
+    aboutPane.visibleProperty().set(false);
+  }
+
+  /**
+   * Set plain pane to be visible.
+   */
+  public void setPlainPane(){
+    //Set the visibility of panes.
+    keyPane.visibleProperty().set(false);
+    encryptPane.visibleProperty().set(false);
+    decryptPane.visibleProperty().set(false);
+    plainPane.visibleProperty().set(true);
+    revealPane.visibleProperty().set(false);
+    aboutPane.visibleProperty().set(false);
+  }
+
+  /**
+   * Set reveal pane to be visible.
+   */
+  public void setRevealPane(){
+    //Set the visibility of panes.
+    keyPane.visibleProperty().set(false);
+    encryptPane.visibleProperty().set(false);
+    decryptPane.visibleProperty().set(false);
+    plainPane.visibleProperty().set(false);
+    revealPane.visibleProperty().set(true);
+    aboutPane.visibleProperty().set(false);
+  }
+
+  /**
+   * Set the about pane to visible.
+   */
+  public void setAboutPane(){
+    //Set the visibility of panes.
+    keyPane.visibleProperty().set(false);
+    encryptPane.visibleProperty().set(false);
+    decryptPane.visibleProperty().set(false);
+    plainPane.visibleProperty().set(false);
+    revealPane.visibleProperty().set(false);
+    aboutPane.visibleProperty().set(true);
   }
 
 
-  public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
-    this.Ciph = new Ciph(); // initialize new ciph
-    this.model = new Model();
-    // this.model = model;
-  }
 
+
+  //****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!
+  /*
   @FXML
   public void test1btn() throws NoSuchAlgorithmException, SQLException {
 
@@ -126,7 +228,9 @@ public class Controller extends StegMeister {
     }
     //*******************************************
     //* ADD above code into new button, it causes an exception and needs to be isolated
-    */
+    //*/
+
+  /*
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output
@@ -144,7 +248,8 @@ public class Controller extends StegMeister {
     public void setImgb(){ //example set image
        imgb.setImage(imagee);
     }
-    */
+   // */
+  /*
   public void onEncode() {
     Image modified = model.encoder.encodeImage(imgb.getImage(), test2input.getText());
     imga.setImage(modified);
@@ -160,4 +265,5 @@ public class Controller extends StegMeister {
     this.imga = modified;
     this.test3 = fieldMessage;
   }
+  */
 }

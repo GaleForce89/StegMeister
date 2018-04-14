@@ -4,4 +4,6 @@
 .JFXbutton{
     -fx-background-color:  #eaf8ff;
 }
-
+.JFXbutton:focused{
+    -fx-background-color:  #f4f4f4;
+}
