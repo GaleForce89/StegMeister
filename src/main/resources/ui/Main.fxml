@@ -114,7 +114,7 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="encryptPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="encryptPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
@@ -128,10 +128,13 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField alignment="CENTER" HBox.hgrow="ALWAYS">
+                                                <TextField HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets bottom="20.0" right="30.0" top="30.0" />
                                                    </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
                                                 </TextField>
                                                 <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Load">
                                                    <HBox.margin>
@@ -142,7 +145,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER">
                                              <children>
-                                                <Label text="Message" HBox.hgrow="ALWAYS">
+                                                <Label text="Message to encrypt" HBox.hgrow="ALWAYS">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
@@ -154,10 +157,13 @@
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="280.0" prefWidth="744.0" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TextArea HBox.hgrow="ALWAYS">
+                                                <TextArea wrapText="true" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets left="40.0" right="40.0" />
                                                    </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
                                                 </TextArea>
                                              </children>
                                           </HBox>
@@ -185,11 +191,71 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="decryptPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="decryptPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox alignment="CENTER" layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                          <HBox alignment="TOP_CENTER">
+                                             <children>
+                                                <Label alignment="CENTER" text="Image: ">
+                                                   <HBox.margin>
+                                                      <Insets left="40.0" right="10.0" top="30.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" right="30.0" top="30.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Load">
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" top="30.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER">
+                                             <children>
+                                                <Label text="Decrypted message" HBox.hgrow="ALWAYS">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="280.0" prefWidth="744.0" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea editable="false" wrapText="true" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets left="40.0" right="40.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextArea>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Decrypt">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" right="10.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
