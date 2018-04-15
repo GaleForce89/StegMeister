@@ -29,7 +29,7 @@ import steg.steganography.Model;
 
 public class Controller extends StegMeister {
   /** Private ciph for encryption/decryption. */
-  private Ciph Ciph;
+  private Ciph cryptogram; //cipher object.
 
   /** Private model for encoder/decoder. */
   private Model model;
@@ -41,7 +41,7 @@ public class Controller extends StegMeister {
    * @throws NoSuchAlgorithmException if algo DNE.
    */
   public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
-    this.Ciph = new Ciph(); // initialize new ciph
+    this.cryptogram = new Ciph(); // initialize new ciph
     this.model = new Model();
     // this.model = model;
   }
