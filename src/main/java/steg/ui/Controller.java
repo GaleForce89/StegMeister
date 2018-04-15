@@ -83,6 +83,9 @@ public class Controller extends StegMeister {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - Key manager");
+
     // adjust the background colors of buttons to match ui
     // possibly figure out more mouse events to handle this. Or a new active method.
     // keyMenu.getStyleClass().add("JFXbutton-selected"); //activate keyMenu
@@ -104,6 +107,9 @@ public class Controller extends StegMeister {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - Encrypt message");
+
     // adjust the background colors of buttons to match ui
     // encryptMenu.getStyleClass().add("JFXbutton-selected");
     // keyMenu.getStyleClass().add("JFXbutton-inactive");
@@ -122,6 +128,9 @@ public class Controller extends StegMeister {
     plainPane.visibleProperty().set(false);
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
+
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - Decrypt message");
   }
 
   /** Set plain pane to be visible. */
@@ -133,6 +142,10 @@ public class Controller extends StegMeister {
     plainPane.visibleProperty().set(true);
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
+
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - Hide plaintext");
+
   }
 
   /** Set reveal pane to be visible. */
@@ -144,6 +157,9 @@ public class Controller extends StegMeister {
     plainPane.visibleProperty().set(false);
     revealPane.visibleProperty().set(true);
     aboutPane.visibleProperty().set(false);
+
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - Reveal plaintext");
   }
 
   /** Set the about pane to visible. */
@@ -155,6 +171,9 @@ public class Controller extends StegMeister {
     plainPane.visibleProperty().set(false);
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(true);
+
+    //adjust stage name.
+    getPrimaryStage().setTitle("StegMeister - About");
   }
 
   // ****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!

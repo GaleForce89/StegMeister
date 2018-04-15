@@ -143,7 +143,7 @@ public class StegMeister extends Application {
     Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
     setPrimaryStage(primaryStage);
     Parent root = FXMLLoader.load(getClass().getResource("/ui/Main.fxml"));
-    primaryStage.setTitle("StegMeister");
+    primaryStage.setTitle("StegMeister - Key manager");
     primaryStage
         .getIcons()
         .add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
