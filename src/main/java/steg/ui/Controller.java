@@ -2,15 +2,27 @@ package steg.ui;
 
 // Import required packages
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.controlsfx.control.StatusBar;
 import com.jfoenix.controls.JFXButton;
+
+import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javax.crypto.NoSuchPaddingException;
 import steg.StegMeister;
 import steg.cryptography.Ciph;
 import steg.steganography.Model;
+import steg.ui.Listkey;
 
 // import org.controlsfx.control.StatusBar;
 // import javafx.scene.control.Alert;
@@ -27,7 +39,7 @@ import steg.steganography.Model;
 // import steg.database.Connect;
 // import javafx.scene.control.Tab;
 
-public class Controller extends StegMeister {
+public class Controller extends StegMeister implements Initializable {
   /** Private ciph for encryption/decryption. */
   private Ciph cryptogram; //cipher object.
 
@@ -43,7 +55,6 @@ public class Controller extends StegMeister {
   public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
     this.cryptogram = new Ciph(); // initialize new ciph
     this.model = new Model();
-    // this.model = model;
   }
 
   // TEST UI CODE ~Will remove towards end of project.
@@ -60,18 +71,36 @@ public class Controller extends StegMeister {
 
   /** The anchor panes for key, encrypt, decrypt, plain text, and reveal panes. */
   @FXML private AnchorPane keyPane, encryptPane, decryptPane, plainPane, revealPane;
-  // panes to control main ui
+  // panes to control main ui.
 
   /** The tabpane for credits/about pane. */
   @FXML private TabPane aboutPane;
-  // tabpane is different than anchor
+  // tabpane is different than anchor.
 
   /** Names assigned to menu buttons. */
   @FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
-  // bring in jfx buttons for menu
+  // bring in jfx buttons for menu.
+  //currently not used.
+
+  @FXML private StatusBar statusBar;
+  //Bottom status bar.
+
+  /**
+   * Load in the listview for keys stored in database.
+   */
+  @FXML TableView<Listkey> keyTable;
+  //key listview.
+  // The table's data
+  ObservableList<Listkey> dbList;
+
+  /**
+   * Columns for table view.
+   */
+  @FXML TableColumn<Listkey, String> keyWordCol, keyCol;
 
   /** Set the key pane to be visible, as well change background color. */
   @FXML // set fxml for methods below.
+
   public void setKeyPane() {
     // key_pane.toFront(); **Seems visibility suits our needs better than bring to front.
     // keep the comment for later optimizations if better way found.
@@ -174,6 +203,50 @@ public class Controller extends StegMeister {
 
     //adjust stage name.
     getPrimaryStage().setTitle("StegMeister - About");
+  }
+
+  /**
+   * default initilizer for controller.
+   * @param location
+   * @param resources
+   */
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+
+    // Set the columns width auto size (Still not working)
+    //keyTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    //keyTable.getColumns().get(0).prefWidthProperty().bind(keyTable.widthProperty().multiply(.5));    // 50% for id column size
+    //keyTable.getColumns().get(1).prefWidthProperty().bind(keyTable.widthProperty().multiply(0.5));   // 50% for dt column size
+
+    //table data must match the variables id's in the Listkey class.
+    keyCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("storedKey"));
+    keyWordCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("keyWord"));
+
+    //Set the observable arraylist.
+    dbList = FXCollections.observableArrayList();
+    keyTable.setItems(dbList);
+
+    //default into (great for loading database)
+    Listkey item = new Listkey();
+    item.setStoredKey("sdf");
+    item.setKeyWord("sdfdfds");
+    dbList.add(item);
+    Listkey item2 = new Listkey();
+    item2.setStoredKey("sdfdsfsdfsd");
+    item2.setKeyWord("nooooo");
+    dbList.add(item2);
+  }
+
+  //Example how to add to list. finally complete.
+  @FXML public void clickme(){
+    Listkey item = new Listkey();
+    item.setStoredKey("sdf");
+    item.setKeyWord("sdfdfds");
+    dbList.add(item);
+    Listkey item2 = new Listkey();
+    item2.setStoredKey("sdfdsfsdfsd");
+    item2.setKeyWord("nooooo");
+    dbList.add(item2);
   }
 
   // ****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!

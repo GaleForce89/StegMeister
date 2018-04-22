@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
@@ -109,7 +111,110 @@
                                  <children>
                                     <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <TextArea text="kjhkjhjkhkjhlkjlkjlkjlkj" wrapText="true" />
+                                          <HBox alignment="TOP_CENTER">
+                                             <children>
+                                                <Label alignment="CENTER" text="Key:">
+                                                   <HBox.margin>
+                                                      <Insets left="40.0" right="10.0" top="30.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" right="30.0" top="30.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Load">
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" top="30.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER">
+                                             <children>
+                                                <Label text="Stored keys" HBox.hgrow="ALWAYS">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TableView fx:id="keyTable" editable="true" HBox.hgrow="ALWAYS">
+                                                  <columns>
+                                                    <TableColumn fx:id="keyCol" maxWidth="1000.0" prefWidth="282.0" text="Key" />
+                                                    <TableColumn fx:id="keyWordCol" maxWidth="1000.0" prefWidth="306.0" text="Keyword" />
+                                                  </columns>
+                                                   <HBox.margin>
+                                                      <Insets left="40.0" />
+                                                   </HBox.margin>
+                                                </TableView>
+                                                <VBox stylesheets="@listview.css">
+                                                   <children>
+                                                      <JFXButton ripplerFill="#615a5a" styleClass="JFXbutton" text="💾">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Save key to database" />
+                                                         </tooltip>
+                                                      </JFXButton>
+                                                      <JFXButton styleClass="JFXbutton" text="🔄">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Refresh database" />
+                                                         </tooltip>
+                                                      </JFXButton>
+                                                      <JFXButton styleClass="JFXbutton" text="🚫">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Delete key from database" />
+                                                         </tooltip>
+                                                      </JFXButton>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER">
+                                             <children>
+                                                <Button fx:id="generateKey" mnemonicParsing="false" onAction="#clickme" prefHeight="30.0" prefWidth="120.0" text="Generate key">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Save key to file">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="80.0" right="10.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
@@ -467,7 +572,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <StatusBar text="No key loaded.">
+            <StatusBar fx:id="statusBar" text="No key loaded.">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

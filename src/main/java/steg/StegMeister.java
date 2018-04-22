@@ -29,9 +29,11 @@ package steg;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.*;
+
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -147,7 +149,7 @@ public class StegMeister extends Application {
     primaryStage
         .getIcons()
         .add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
-    primaryStage.setScene(new Scene(root, 800, 600));
+    primaryStage.setScene(new Scene(root, 800, 490));
     primaryStage.show();
   }
 }
