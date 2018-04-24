@@ -1,8 +1,8 @@
 package steg.ui;
 
 // Import required packages
+//import com.jfoenix.controls.JFXButton;//currently not in use.
 
-import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
 import steg.cryptography.Ciph;
+import steg.database.*;
 import steg.steganography.Model;
 
 import javax.crypto.NoSuchPaddingException;
@@ -33,21 +34,6 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 
-// import org.controlsfx.control.StatusBar;
-// import javafx.scene.control.Alert;
-// import javafx.scene.control.Alert.AlertType;
-// import javafx.scene.control.TextArea;
-// import javafx.scene.image.Image;
-// import javafx.scene.image.ImageView;
-// import java.sql.*;
-// import java.sql.Connection;
-// import java.sql.DriverManager;
-// import java.sql.SQLException;
-// import steg.database.InsertData;
-// import javafx.scene.layout.Pane;
-// import steg.database.Connect;
-// import javafx.scene.control.Tab;
-
 public class Controller extends StegMeister implements Initializable {
   /** Private ciph for encryption/decryption. */
   private Ciph cryptogram; // cipher object.
@@ -55,7 +41,16 @@ public class Controller extends StegMeister implements Initializable {
   /** Private model for encoder/decoder. */
   private Model model;
 
-  double imageWidth, imageHeight; // used to hold original image size.
+  /**
+   * create the connection object for DB, may be moved later.
+   */
+  Connect connObj = new Connect();
+
+  /**
+   * create the DBObj to create db if DNE, may be moved later.
+   */
+  CreateDB DBObj = new CreateDB();
+
 
   /**
    * Default controller constructor.
@@ -68,18 +63,6 @@ public class Controller extends StegMeister implements Initializable {
     this.model = new Model();
   }
 
-  // TEST UI CODE ~Will remove towards end of project.
-  /*
-  @FXML private javafx.scene.control.TextArea test1; // text areas
-  @FXML private javafx.scene.control.TextArea test2;
-  @FXML private javafx.scene.control.TextArea test3;
-  @FXML private javafx.scene.control.TextField test1input; // inputs
-  @FXML private javafx.scene.control.TextField test2input;
-  @FXML private javafx.scene.control.TextField test3input;
-  @FXML private ImageView imgb = new ImageView(); // before
-  @FXML private ImageView imga = new ImageView(); // after
-  */
-
   /** The anchor panes for key, encrypt, decrypt, plain text, and reveal panes. */
   @FXML private AnchorPane keyPane, encryptPane, decryptPane, plainPane, revealPane;
   // panes to control main ui.
@@ -88,8 +71,8 @@ public class Controller extends StegMeister implements Initializable {
   @FXML private TabPane aboutPane;
   // tabpane is different than anchor.
 
-  /** Names assigned to menu buttons. */
-  @FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
+  ///** Names assigned to menu buttons. */
+  //@FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
   // bring in jfx buttons for menu.
   // currently not used.
 
@@ -99,8 +82,7 @@ public class Controller extends StegMeister implements Initializable {
   /** Load in the listview for keys stored in database. */
   @FXML TableView<Listkey> keyTable;
   // key listview.
-  // The table's data
-  ObservableList<Listkey> dbList;
+  private ObservableList<Listkey> dbList;// The table's data
 
   /** Columns for table view. */
   @FXML TableColumn<Listkey, String> keyWordCol, keyCol;
@@ -108,10 +90,20 @@ public class Controller extends StegMeister implements Initializable {
   /** Image loaded into memory for viewing. */
   @FXML private ImageView image = new ImageView();
 
+  /**
+   * Textfield with file locations.
+   */
   @FXML private TextField fileHideTxt, fileRevealTxt;
+
+  /**
+   * Text area for message input/output
+   */
   @FXML private TextArea hideMsgPlain, showMsgPlain;
 
-  @FXML public Image imageMemory;
+  /**
+   * Load image file into memory separate from imageview.
+   */
+  @FXML private Image imageMemory;
 
   /** Set the key pane to be visible. */
   @FXML // set fxml for methods below.
@@ -128,16 +120,6 @@ public class Controller extends StegMeister implements Initializable {
 
     // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Key manager");
-
-    // adjust the background colors of buttons to match ui
-    // possibly figure out more mouse events to handle this. Or a new active method.
-    // keyMenu.getStyleClass().add("JFXbutton-selected"); //activate keyMenu
-    // encryptMenu.getStyleClass().add("JFXbutton-inactive");
-    // decryptMenu.getStyleClass().add("JFXbutton-inactive");
-    // plainMenu.getStyleClass().add("JFXbutton-inactive");
-    // revealMenu.getStyleClass().add("JFXbutton-inactive");
-    // aboutMenu.getStyleClass().add("JFXbutton-inactive");
-    // keyMenu.getStyleClass().add("JFXbutton-selected"); //activate keyMenu
   }
 
   /** Set the encrypt pane to visible. */
@@ -233,44 +215,60 @@ public class Controller extends StegMeister implements Initializable {
         .bind(keyTable.widthProperty().multiply(0.49)); // 49% for dt column size
 
     // table data must match the variables id's in the Listkey class.
-    keyCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("storedKey"));
-    keyWordCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("keyWord"));
+    keyCol.setCellValueFactory(new PropertyValueFactory<>("storedKey"));
+    keyWordCol.setCellValueFactory(new PropertyValueFactory<>("keyWord"));
 
     // Set the observable arraylist.
     dbList = FXCollections.observableArrayList();
     keyTable.setItems(dbList);
 
     // default into (great for loading database)
-    Listkey item = new Listkey();
-    item.setStoredKey("sdf");
-    item.setKeyWord("sdfdfds");
-    dbList.add(item);
-    Listkey item2 = new Listkey();
-    item2.setStoredKey("sdfdsfsdfsd");
-    item2.setKeyWord("nooooo");
-    dbList.add(item2);
+    // Load Database if exists, else create.
+      if(!new File("DB").exists()){
+          //create directory
+          new File("DB").mkdir();
+
+          //create db
+        DBObj.createNewDB("dbKeys.db");
+          //create tables
+        CreateTable createT = new CreateTable();
+        createT.createNewTable();
+      }
+      connObj.connect();//does not seem to be needed
+
+    //Fill the list with keys from database on load.
+    RowCount rowCount = new RowCount();//create rowcount object.
+    int count = rowCount.rowCount();//set the rowcount to a temporary int.
+
+    //create the row data object.
+    RowData rowData = new RowData();
+
+    for (int current = 1; current <= count; current++){ //loop through and fill list.
+      Listkey item = new Listkey(); //create new listkey object.
+      item.setStoredKey(rowData.getKey(current)); //add the key.
+      item.setKeyWord(rowData.getKeyWord(current)); //add the keyword.
+      dbList.add(item);
+    }
   }
 
   /**
    * Open file chooser and load the selected image into memory.
    *
-   * @throws IOException Print stacktrace.
    */
-  public void loadImage() throws IOException {
-
+  public void loadImage() {
     // create new filechooser built in javafx dailog.
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open image file"); // set title
     fileChooser
         .getExtensionFilters()
-        .addAll( // filter extensions
+        .addAll(// filter extensions
             new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
     File file = fileChooser.showOpenDialog(new Stage());
     if (file != null) {
       try {
         // work around to load images
         imageMemory = new Image(file.toURI().toURL().toString());
-        image = new ImageView(); // create new to allow garbage collector to clear previous.
+        //image = new ImageView(); // create new to allow garbage collector to clear previous.
         image.setImage(imageMemory);
 
         // need to set the correct txt field.
@@ -294,17 +292,12 @@ public class Controller extends StegMeister implements Initializable {
   /** Method to save current image from memory to disk. */
   public void saveImage() {
 
-    // Encode message into image before saving. (will modify for encrypt later)
-    Image encoded = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
-    imageMemory = encoded;
-    image.setImage(imageMemory);
-
     // similar to loadImage
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Image");
     fileChooser
         .getExtensionFilters()
-        .addAll( // filter extensions
+        .addAll(// filter extensions
             new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
     File file = fileChooser.showSaveDialog(new Stage()); // show dialog
 
@@ -314,7 +307,9 @@ public class Controller extends StegMeister implements Initializable {
         String fileExtension =
             extension.substring(
                 extension.indexOf(".") + 1, file.getName().length()); // get extension.
-
+        // Encode message into image before saving. (will modify for encrypt later)
+        imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+        image.setImage(imageMemory);
         // buffered image to save.
         BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
 
@@ -340,6 +335,9 @@ public class Controller extends StegMeister implements Initializable {
     }
   }
 
+  /**
+   * Message to reveal plain message in TextArea.
+   */
   public void showMsgPlain() {
     String message = model.decoder.decodeImage(imageMemory); // decode
     showMsgPlain.setText(message); // set text.
@@ -347,6 +345,10 @@ public class Controller extends StegMeister implements Initializable {
 
   /** Called to preview the image in memory. */
   public void previewImage() {
+    // encode before showing
+    // Encode message into image before saving. (will modify for encrypt later)
+    imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+    image.setImage(imageMemory);
     image.setPreserveRatio(true); // preserve ratio
     image.setSmooth(true); // keep image smooth
     image.setCache(true); // cache image
@@ -369,11 +371,6 @@ public class Controller extends StegMeister implements Initializable {
     image.fitWidthProperty().bind(stage.widthProperty()); // bind the image to stage for rescaling.
     // set Icon
     stage.getIcons().add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
-
-    // encode before showing
-    // Encode message into image before saving. (will modify for encrypt later)
-    Image encoded = model.encoder.encodeImage(image.getImage(), hideMsgPlain.getText());
-    image.setImage(encoded);
     stage.show(); // show the stage.
   }
 
