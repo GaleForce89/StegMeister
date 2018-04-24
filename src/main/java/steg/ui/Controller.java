@@ -2,27 +2,36 @@ package steg.ui;
 
 // Import required packages
 
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.controlsfx.control.StatusBar;
-import com.jfoenix.controls.JFXButton;
-
-import java.awt.event.ActionEvent;
-import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javax.crypto.NoSuchPaddingException;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
 import steg.cryptography.Ciph;
 import steg.steganography.Model;
-import steg.ui.Listkey;
+
+import javax.crypto.NoSuchPaddingException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.util.ResourceBundle;
 
 // import org.controlsfx.control.StatusBar;
 // import javafx.scene.control.Alert;
@@ -41,10 +50,12 @@ import steg.ui.Listkey;
 
 public class Controller extends StegMeister implements Initializable {
   /** Private ciph for encryption/decryption. */
-  private Ciph cryptogram; //cipher object.
+  private Ciph cryptogram; // cipher object.
 
   /** Private model for encoder/decoder. */
   private Model model;
+
+  double imageWidth, imageHeight; // used to hold original image size.
 
   /**
    * Default controller constructor.
@@ -80,27 +91,30 @@ public class Controller extends StegMeister implements Initializable {
   /** Names assigned to menu buttons. */
   @FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
   // bring in jfx buttons for menu.
-  //currently not used.
+  // currently not used.
 
   @FXML private StatusBar statusBar;
-  //Bottom status bar.
+  // Bottom status bar.
 
-  /**
-   * Load in the listview for keys stored in database.
-   */
+  /** Load in the listview for keys stored in database. */
   @FXML TableView<Listkey> keyTable;
-  //key listview.
+  // key listview.
   // The table's data
   ObservableList<Listkey> dbList;
 
-  /**
-   * Columns for table view.
-   */
+  /** Columns for table view. */
   @FXML TableColumn<Listkey, String> keyWordCol, keyCol;
 
-  /** Set the key pane to be visible, as well change background color. */
-  @FXML // set fxml for methods below.
+  /** Image loaded into memory for viewing. */
+  @FXML private ImageView image = new ImageView();
 
+  @FXML private TextField fileHideTxt, fileRevealTxt;
+  @FXML private TextArea hideMsgPlain, showMsgPlain;
+
+  @FXML public Image imageMemory;
+
+  /** Set the key pane to be visible. */
+  @FXML // set fxml for methods below.
   public void setKeyPane() {
     // key_pane.toFront(); **Seems visibility suits our needs better than bring to front.
     // keep the comment for later optimizations if better way found.
@@ -112,7 +126,7 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Key manager");
 
     // adjust the background colors of buttons to match ui
@@ -136,16 +150,8 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Encrypt message");
-
-    // adjust the background colors of buttons to match ui
-    // encryptMenu.getStyleClass().add("JFXbutton-selected");
-    // keyMenu.getStyleClass().add("JFXbutton-inactive");
-    // decryptMenu.getStyleClass().add("JFXbutton-inactive");
-    //  plainMenu.getStyleClass().add("JFXbutton-inactive");
-    //   revealMenu.getStyleClass().add("JFXbutton-inactive");
-    //    aboutMenu.getStyleClass().add("JFXbutton-inactive");
   }
 
   /** Set decrypt pane to be visible. */
@@ -158,7 +164,7 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Decrypt message");
   }
 
@@ -172,9 +178,8 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(false);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Hide plaintext");
-
   }
 
   /** Set reveal pane to be visible. */
@@ -187,7 +192,7 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(true);
     aboutPane.visibleProperty().set(false);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - Reveal plaintext");
   }
 
@@ -201,32 +206,41 @@ public class Controller extends StegMeister implements Initializable {
     revealPane.visibleProperty().set(false);
     aboutPane.visibleProperty().set(true);
 
-    //adjust stage name.
+    // adjust stage name.
     getPrimaryStage().setTitle("StegMeister - About");
   }
 
   /**
    * default initilizer for controller.
-   * @param location
-   * @param resources
+   *
+   * @param location NULL
+   * @param resources NULL
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
     // Set the columns width auto size (Still not working)
-    //keyTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    //keyTable.getColumns().get(0).prefWidthProperty().bind(keyTable.widthProperty().multiply(.5));    // 50% for id column size
-    //keyTable.getColumns().get(1).prefWidthProperty().bind(keyTable.widthProperty().multiply(0.5));   // 50% for dt column size
+    keyTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    keyTable
+        .getColumns()
+        .get(0)
+        .prefWidthProperty()
+        .bind(keyTable.widthProperty().multiply(.49)); // 49% for id column size
+    keyTable
+        .getColumns()
+        .get(1)
+        .prefWidthProperty()
+        .bind(keyTable.widthProperty().multiply(0.49)); // 49% for dt column size
 
-    //table data must match the variables id's in the Listkey class.
+    // table data must match the variables id's in the Listkey class.
     keyCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("storedKey"));
     keyWordCol.setCellValueFactory(new PropertyValueFactory<Listkey, String>("keyWord"));
 
-    //Set the observable arraylist.
+    // Set the observable arraylist.
     dbList = FXCollections.observableArrayList();
     keyTable.setItems(dbList);
 
-    //default into (great for loading database)
+    // default into (great for loading database)
     Listkey item = new Listkey();
     item.setStoredKey("sdf");
     item.setKeyWord("sdfdfds");
@@ -237,16 +251,130 @@ public class Controller extends StegMeister implements Initializable {
     dbList.add(item2);
   }
 
-  //Example how to add to list. finally complete.
-  @FXML public void clickme(){
-    Listkey item = new Listkey();
-    item.setStoredKey("sdf");
-    item.setKeyWord("sdfdfds");
-    dbList.add(item);
-    Listkey item2 = new Listkey();
-    item2.setStoredKey("sdfdsfsdfsd");
-    item2.setKeyWord("nooooo");
-    dbList.add(item2);
+  /**
+   * Open file chooser and load the selected image into memory.
+   *
+   * @throws IOException Print stacktrace.
+   */
+  public void loadImage() throws IOException {
+
+    // create new filechooser built in javafx dailog.
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open image file"); // set title
+    fileChooser
+        .getExtensionFilters()
+        .addAll( // filter extensions
+            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+    File file = fileChooser.showOpenDialog(new Stage());
+    if (file != null) {
+      try {
+        // work around to load images
+        imageMemory = new Image(file.toURI().toURL().toString());
+        image = new ImageView(); // create new to allow garbage collector to clear previous.
+        image.setImage(imageMemory);
+
+        // need to set the correct txt field.
+        if (plainPane.isVisible()) {
+          fileHideTxt.setText(file.toString());
+
+          // clear other text fields
+          fileRevealTxt.clear();
+        } else if (revealPane.isVisible()) {
+          fileRevealTxt.setText(file.toString());
+
+          // clear other fields
+          fileHideTxt.clear();
+        }
+      } catch (IOException ex) { // catch
+        ex.printStackTrace();
+      }
+    }
+  }
+
+  /** Method to save current image from memory to disk. */
+  public void saveImage() {
+
+    // Encode message into image before saving. (will modify for encrypt later)
+    Image encoded = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+    imageMemory = encoded;
+    image.setImage(imageMemory);
+
+    // similar to loadImage
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save Image");
+    fileChooser
+        .getExtensionFilters()
+        .addAll( // filter extensions
+            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+    File file = fileChooser.showSaveDialog(new Stage()); // show dialog
+
+    if (file != null) {
+      try {
+        String extension = file.getName(); // get the path
+        String fileExtension =
+            extension.substring(
+                extension.indexOf(".") + 1, file.getName().length()); // get extension.
+
+        // buffered image to save.
+        BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
+
+        // check if png, jpg, or jpeg.
+        switch (fileExtension) {
+          case "png":
+            ImageIO.write(bImage, "png", file);
+            break;
+          case "jpg":
+            ImageIO.write(bImage, "jpg", file);
+            break;
+          case "jpeg":
+            ImageIO.write(bImage, "jpeg", file);
+            break;
+          default:
+            // write some sort of dialog or something.
+            System.out.println("dfgs");
+            break;
+        }
+      } catch (IOException ex) {
+        System.out.println(ex.getMessage());
+      }
+    }
+  }
+
+  public void showMsgPlain() {
+    String message = model.decoder.decodeImage(imageMemory); // decode
+    showMsgPlain.setText(message); // set text.
+  }
+
+  /** Called to preview the image in memory. */
+  public void previewImage() {
+    image.setPreserveRatio(true); // preserve ratio
+    image.setSmooth(true); // keep image smooth
+    image.setCache(true); // cache image
+    Group root = new Group(); // create new group root
+    Scene scene = new Scene(root); // create new scene
+    scene.setFill(Color.BLACK); // set the scene background black.
+    HBox box = new HBox(); // create hbox
+    box.setStyle("-fx-background-color: #FFFFFF"); // set white background for hbox.
+    box.getChildren().add(image); // add image
+    box.setPrefWidth(400); // pref width
+    box.setPrefWidth(400); // pref height
+    Stage stage = new Stage(); // create new stage
+    stage.setTitle("Image Preview"); // set title
+    root.getChildren().add(box); // add the hbox to group
+    stage.setWidth(400); // pref width
+    stage.setHeight(400); // pref height
+    stage.setScene(scene); // set the scene
+    stage.sizeToScene(); // scene to size scaling
+    stage.initOwner(getPrimaryStage()); // set owner as primary stage
+    image.fitWidthProperty().bind(stage.widthProperty()); // bind the image to stage for rescaling.
+    // set Icon
+    stage.getIcons().add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
+
+    // encode before showing
+    // Encode message into image before saving. (will modify for encrypt later)
+    Image encoded = model.encoder.encodeImage(image.getImage(), hideMsgPlain.getText());
+    image.setImage(encoded);
+    stage.show(); // show the stage.
   }
 
   // ****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!
@@ -319,12 +447,12 @@ public class Controller extends StegMeister implements Initializable {
    // */
   /*
   public void onEncode() {
-    Image modified = model.encoder.encodeImage(imgb.getImage(), test2input.getText());
+    Image modified = model.encoder.encodeImage(imgb.loadImage(), test2input.getText());
     imga.setImage(modified);
   }
 
   public void onDecode() {
-    String message = model.decoder.decodeImage(imga.getImage());
+    String message = model.decoder.decodeImage(imga.loadImage());
     test3input.setText(message);
   }
 

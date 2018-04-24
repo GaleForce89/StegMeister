@@ -27,13 +27,8 @@
  */
 package steg;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,6 +43,9 @@ import steg.database.Connect;
 import steg.database.CreateDB;
 import steg.database.CreateTable;
 import steg.database.InsertData;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class StegMeister extends Application {
 

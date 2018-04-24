@@ -1,14 +1,14 @@
 package steg.cryptography;
 
-import java.security.InvalidParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Arrays;
 
 /** The encrypt class is used for all things encryption, to include key generation. */
 public class Encrypt extends Cryptography {
@@ -52,7 +52,7 @@ public class Encrypt extends Cryptography {
     } catch (Exception ex) { // catch if we run into issues.
       ex.printStackTrace();
       return "Something went terribly wrong..... contact support"; // display something went wrong
-                                                                   // if
+      // if
       // it does
     }
     return strBuilder.toString(); // change this if we implement base64 encoding
