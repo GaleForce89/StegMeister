@@ -1,4 +1,5 @@
 steg
 steg.cryptography
+steg.database
 steg.steganography
 steg.ui

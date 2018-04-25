@@ -9,7 +9,7 @@ mainClassName = 'steg.StegMeister'
 group 'StegMeister' //group name
 version = '1.0' //version number
 sourceCompatibility = 9 //java source version
-targetCompatibility = 9 //target jdk 8 needed for pmd
+targetCompatibility = 9 //target jdk 9 needed for pmd
 
 buildscript {
     repositories {
@@ -24,6 +24,12 @@ buildscript {
         }
         maven {
             url "https://mvnrepository.com/artifact/org.controlsfx/controlsfx"
+        }
+        maven {
+            url "https://mvnrepository.com/artifact/com.jfoenix/jfoenix"
+        }
+        maven {
+            url "https://mvnrepository.com/artifact/de.jensd/fontawesomefx"
         }
         maven {
             url "https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd"
@@ -41,6 +47,8 @@ buildscript {
     dependencies {
         //classpath "gradle.plugin.no.tornado:fxlauncher-gradle-plugin:1.0.16" //add if useful
         classpath "org.controlsfx:controlsfx:9.0.0"
+        classpath "com.jfoenix:jfoenix:9.0.3"
+        classpath "de.jensd:fontawesomefx:8.9"
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
         //classpath "com.google.googlejavaformat:google-java-format:1.5"
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
@@ -83,11 +91,21 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
             'org.xerial:sqlite-jdbc:3.21.0.1',
             'org.controlsfx:controlsfx:9.0.0',
+            'de.jensd:fontawesomefx:8.9',
+            'com.jfoenix:jfoenix:9.0.3',
             'gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.6',
             'com.github.spotbugs:spotbugs:3.1.2',
             'net.jcip:jcip-annotations:1.0',
             'com.github.spotbugs:spotbugs-annotations:3.1.2',
-            "commons-codec:commons-codec:1.11"
+            "commons-codec:commons-codec:1.11",
+            'de.jensd:fontawesomefx-emojione:2.2.7-2',
+            'de.jensd:fontawesomefx-fontawesome:4.7.0-5',
+            'de.jensd:fontawesomefx-icons525:3.0.0-4',
+            'de.jensd:fontawesomefx-materialdesignfont:1.7.22-4',
+            'de.jensd:fontawesomefx-materialicons:2.2.0-5',
+            'de.jensd:fontawesomefx-octicons:4.3.0-5',
+            'de.jensd:fontawesomefx-weathericons:2.0.10-5',
+            'de.jensd:fontawesomefx-controls:8.15'
     )
     testRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0'
@@ -99,6 +117,15 @@ dependencies {
     compileOnly 'gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.6'
     compile 'org.xerial:sqlite-jdbc:3.21.0.1'
     compile 'org.controlsfx:controlsfx:9.0.0'
+    compile 'com.jfoenix:jfoenix:9.0.3'
+    compile 'de.jensd:fontawesomefx-emojione:2.2.7-2'
+    compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-5'
+    compile 'de.jensd:fontawesomefx-icons525:3.0.0-4'
+    compile 'de.jensd:fontawesomefx-materialdesignfont:1.7.22-4'
+    compile 'de.jensd:fontawesomefx-materialicons:2.2.0-5'
+    compile 'de.jensd:fontawesomefx-octicons:4.3.0-5'
+    compile 'de.jensd:fontawesomefx-weathericons:2.0.10-5'
+    compile 'de.jensd:fontawesomefx-controls:8.15'
     compile "commons-codec:commons-codec:1.11"
     //compileOnly 'com.github.spotbugs:spotbugs:3.1.2'
     //compileOnly 'net.jcip:jcip-annotations:1.0'

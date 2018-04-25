@@ -22,14 +22,10 @@
  * @author Chris Waterman
  * @author add name
  * @author add name
- * @version 0.1 (Current version number)
+ * @version 1.0 (Current version number)
  * @since 0.1 (The version that the class was first added to the project)
  */
 package steg;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.sql.DriverManager;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -43,29 +39,31 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import steg.database.Connect;
-import steg.database.CreateDB;
-import steg.database.CreateTable;
-import steg.database.InsertData;
-import java.sql.*;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class StegMeister extends Application {
 
   private static Stage pStage; // primary stage
 
+  /**
+   * StegMeister main method. Commandline not implemented. //TODO
+   * @param args N/A
+   */
   public static void main(String[] args) {
-    Connect connObj = new Connect();
-    connObj.connect();
-    CreateDB DBObj = new CreateDB();
-    DBObj.createNewDB("dbKeys.db");
-    CreateTable createT = new CreateTable();
-    createT.createNewTable();
-    InsertData insertDOBJ = new InsertData();
+   // Connect connObj = new Connect();
+    //connObj.connect();
+    //CreateDB DBObj = new CreateDB();
+    //DBObj.createNewDB("dbKeys.db");
+    //CreateTable createT = new CreateTable();
+    //createT.createNewTable();
+    //InsertData insertDOBJ = new InsertData();
     launch(args);
 
-      //create new DB file structure if doesn't exist
-      //createNewDB("test.db");
-      //launch(args);
+    // create new DB file structure if doesn't exist
+    // createNewDB("test.db");
+    // launch(args);
   }
 
   /*
@@ -144,12 +142,12 @@ public class StegMeister extends Application {
   public void start(Stage primaryStage) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError);
     setPrimaryStage(primaryStage);
-    Parent root = FXMLLoader.load(getClass().getResource("/ui/UI.fxml"));
-    primaryStage.setTitle("StegMeister");
+    Parent root = FXMLLoader.load(getClass().getResource("/ui/Main.fxml"));
+    primaryStage.setTitle("StegMeister - Key manager");
     primaryStage
         .getIcons()
         .add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
-    primaryStage.setScene(new Scene(root, 800, 600));
+    primaryStage.setScene(new Scene(root, 800, 490));
     primaryStage.show();
   }
 }
