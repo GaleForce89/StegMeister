@@ -96,7 +96,7 @@
                      <children>
                         <AnchorPane VBox.vgrow="ALWAYS">
                            <children>
-                              <AnchorPane fx:id="keyPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="keyPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
@@ -150,7 +150,7 @@
                                                 </TableView>
                                                 <VBox stylesheets="@listview.css">
                                                    <children>
-                                                      <JFXButton ripplerFill="#615a5a" styleClass="JFXbutton" text="💾">
+                                                      <JFXButton onAction="#savetoDB" ripplerFill="#615a5a" styleClass="JFXbutton" text="💾">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -158,7 +158,7 @@
                                                             <Tooltip text="Save key to database" />
                                                          </tooltip>
                                                       </JFXButton>
-                                                      <JFXButton styleClass="JFXbutton" text="🔄">
+                                                      <JFXButton onAction="#refreshDB" styleClass="JFXbutton" text="🔄">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -354,7 +354,7 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="plainPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="plainPane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox layoutX="103.0" layoutY="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>

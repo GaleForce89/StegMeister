@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller extends StegMeister implements Initializable {
@@ -235,21 +237,9 @@ public class Controller extends StegMeister implements Initializable {
         createT.createNewTable();
       }
       connObj.connect();//does not seem to be needed
-
-    //Fill the list with keys from database on load.
-    RowCount rowCount = new RowCount();//create rowcount object.
-    int count = rowCount.rowCount();//set the rowcount to a temporary int.
-
-    //create the row data object.
-    RowData rowData = new RowData();
-
-    for (int current = 1; current <= count; current++){ //loop through and fill list.
-      Listkey item = new Listkey(); //create new listkey object.
-      item.setStoredKey(rowData.getKey(current)); //add the key.
-      item.setKeyWord(rowData.getKeyWord(current)); //add the keyword.
-      dbList.add(item);
+    refreshDB(); //load the DB.
     }
-  }
+
 
   /**
    * Open file chooser and load the selected image into memory.
@@ -372,6 +362,48 @@ public class Controller extends StegMeister implements Initializable {
     // set Icon
     stage.getIcons().add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
     stage.show(); // show the stage.
+  }
+
+  /**
+   * Refresh the key manager DB list.
+   */
+  public void refreshDB(){
+    //Fill the list with keys from database on load.
+    RowCount rowCount = new RowCount();//create rowcount object.
+    int count = rowCount.rowCount();//set the rowcount to a temporary int.
+
+    //create the row data object.
+    RowData rowData = new RowData();
+
+    //Clear list before reloading.
+    dbList.clear();
+
+    for (int current = 1; current <= count; current++){ //loop through and fill list.
+      Listkey item = new Listkey(); //create new listkey object.
+      item.setStoredKey(rowData.getKey(current)); //add the key.
+      item.setKeyWord(rowData.getKeyWord(current)); //add the keyword.
+      dbList.add(item);
+    }
+  }
+
+  public void savetoDB(){
+    //Create a dialog
+    TextInputDialog dialog = new TextInputDialog("Keyword");
+    dialog.initOwner(getPrimaryStage());
+    dialog.setTitle("Add key to database");
+    dialog.setHeaderText("Please, enter keyword for selected key.");
+    dialog.setContentText("Keyword:");
+
+// Traditional way to get the response value.
+    Optional<String> result = dialog.showAndWait();
+
+    InsertData insertDB = new InsertData();
+    try {
+      insertDB.insert_Key("somelamekey", result.get());
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
   }
 
   // ****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!

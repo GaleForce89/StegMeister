@@ -28,6 +28,7 @@ public class InsertData {
       pstmnt.setString(2, keyword);
       // execute statement
       pstmnt.executeUpdate();
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
