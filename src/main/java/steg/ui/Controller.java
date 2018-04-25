@@ -21,7 +21,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
-import steg.cryptography.Ciph;
+//* changed to Cryptography
+import steg.cryptography.Cryptography;
 import steg.database.*;
 import steg.steganography.Model;
 
@@ -37,22 +38,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller extends StegMeister implements Initializable {
-  /** Private ciph for encryption/decryption. */
-  private Ciph cryptogram; // cipher object.
 
   /** Private model for encoder/decoder. */
   private Model model;
-
-  /**
-   * create the connection object for DB, may be moved later.
-   */
-  Connect connObj = new Connect();
-
-  /**
-   * create the DBObj to create db if DNE, may be moved later.
-   */
-  CreateDB DBObj = new CreateDB();
-
 
   /**
    * Default controller constructor.
@@ -60,8 +48,7 @@ public class Controller extends StegMeister implements Initializable {
    * @throws NoSuchPaddingException If padding DNE.
    * @throws NoSuchAlgorithmException if algo DNE.
    */
-  public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
-    this.cryptogram = new Ciph(); // initialize new ciph
+  public Controller() {
     this.model = new Model();
   }
 
@@ -231,12 +218,11 @@ public class Controller extends StegMeister implements Initializable {
           new File("DB").mkdir();
 
           //create db
-        DBObj.createNewDB("dbKeys.db");
+        steg.database.CreateDB.createNewDB("dbKeys.db");
           //create tables
-        CreateTable createT = new CreateTable();
-        createT.createNewTable();
+        steg.database.CreateTable.createNewTable();
       }
-      connObj.connect();//does not seem to be needed
+      steg.database.Connect.connect();//does not seem to be needed
     refreshDB(); //load the DB.
     }
 
@@ -245,14 +231,15 @@ public class Controller extends StegMeister implements Initializable {
    * Open file chooser and load the selected image into memory.
    *
    */
-  public void loadImage() {
+  public void loadImage()  {
+
     // create new filechooser built in javafx dailog.
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open image file"); // set title
     fileChooser
         .getExtensionFilters()
         .addAll(// filter extensions
-            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+            new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showOpenDialog(new Stage());
     if (file != null) {
       try {
@@ -287,38 +274,19 @@ public class Controller extends StegMeister implements Initializable {
     fileChooser.setTitle("Save Image");
     fileChooser
         .getExtensionFilters()
-        .addAll(// filter extensions
-            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+        .addAll(// filter extensions, only allowing png types
+            new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showSaveDialog(new Stage()); // show dialog
 
     if (file != null) {
       try {
-        String extension = file.getName(); // get the path
-        String fileExtension =
-            extension.substring(
-                extension.indexOf(".") + 1, file.getName().length()); // get extension.
         // Encode message into image before saving. (will modify for encrypt later)
         imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
         image.setImage(imageMemory);
         // buffered image to save.
         BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
-
-        // check if png, jpg, or jpeg.
-        switch (fileExtension) {
-          case "png":
-            ImageIO.write(bImage, "png", file);
-            break;
-          case "jpg":
-            ImageIO.write(bImage, "jpg", file);
-            break;
-          case "jpeg":
-            ImageIO.write(bImage, "jpeg", file);
-            break;
-          default:
-            // write some sort of dialog or something.
-            System.out.println("dfgs");
-            break;
-        }
+        // only allowing png types
+        ImageIO.write(bImage, "png", file);
       } catch (IOException ex) {
         System.out.println(ex.getMessage());
       }
