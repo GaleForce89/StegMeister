@@ -82,12 +82,12 @@ public class Controller extends StegMeister implements Initializable {
   /**
    * Textfield with file locations.
    */
-  @FXML private TextField fileHideTxt, fileRevealTxt;
+  @FXML private TextField fileHideTxt, fileRevealTxt, fileDecryptTxt, fileEncryptTxt, fileKeyTxt;
 
   /**
    * Text area for message input/output
    */
-  @FXML private TextArea hideMsgPlain, showMsgPlain;
+  @FXML private TextArea hideMsgPlain, showMsgPlain, hideMsgEncrypt, showMsgEncrypt;
 
   /**
    * Load image file into memory separate from imageview.

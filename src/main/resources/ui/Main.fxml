@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.StatusBar?>
+
 <AnchorPane prefHeight="490.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steg.ui.Controller">
    <children>
       <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -110,7 +121,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="fileKeyTxt" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets bottom="20.0" right="30.0" top="30.0" />
                                                    </HBox.margin>
@@ -222,7 +233,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="fileEncryptTxt" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets bottom="20.0" right="30.0" top="30.0" />
                                                    </HBox.margin>
@@ -251,7 +262,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="280.0" prefWidth="744.0" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TextArea wrapText="true" HBox.hgrow="ALWAYS">
+                                                <TextArea fx:id="hideMsgEncrypt" wrapText="true" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets left="40.0" right="40.0" />
                                                    </HBox.margin>
@@ -299,7 +310,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField fx:id="fileText" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="fileDecryptTxt" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets bottom="20.0" right="30.0" top="30.0" />
                                                    </HBox.margin>
@@ -328,7 +339,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="280.0" prefWidth="744.0" VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TextArea editable="false" wrapText="true" HBox.hgrow="ALWAYS">
+                                                <TextArea fx:id="showMsgEncrypt" editable="false" wrapText="true" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets left="40.0" right="40.0" />
                                                    </HBox.margin>
