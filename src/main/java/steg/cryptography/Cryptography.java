@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 /** The cipher class it the main class used for encrypting/decrypting a file */
 public class Cryptography {
@@ -13,6 +14,8 @@ public class Cryptography {
   String msg; // used for message
   int keySize; // used to set keysize
   Cipher stego; // aptly named cipher
+  IvParameterSpec ivpspec;
+
 
   // Encrypt encrypt = new Encrypt(); //create our encryption object
 

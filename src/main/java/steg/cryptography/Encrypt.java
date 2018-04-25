@@ -8,7 +8,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import javax.crypto.spec.IvParameterSpec;
-import java.util.Arrays;
+import org.apache.commons.codec.binary.Base64;
 
 
 /** The encrypt class is used for all things encryption, to include key generation. */
@@ -17,39 +17,60 @@ public class Encrypt extends Cryptography {
   /** Default constructor to null */
   public Encrypt() throws NoSuchPaddingException, NoSuchAlgorithmException {
     super();
+    setKey(genKey(keySize));
+    byte[] initvector = new byte[16];
+    SecureRandom randomNumber = new SecureRandom();
+    randomNumber.nextBytes(initvector);
+    ivpspec = new IvParameterSpec(initvector);
   }
 
-  public String Crypt(String msg, String test) { //DOES NOT WORK, NEED TO CORRECTLY CONVERT BYTE ARRAY TO STRING
-    /*
-    Heavy work in progress, going to take in strings, create more methods and convert the strings to bytes,
-    from there at the end convert bytes to strings to keep things easy on the ui side.
-     */
+  public String Crypt(String msg) {
 
     //try using cipher block chaining, need to create a random initialization vector so ciphertext is different
       // with each encryption
-    byte[] initVector = new byte[16]; //create byte array to fill initialization vector
-    SecureRandom randomNumber = new SecureRandom(); //new random number to randomize initialization vector
-    randomNumber.nextBytes(initVector); //fill byte array with random numbers
-    IvParameterSpec ivpspec = new IvParameterSpec(initVector); //set up initialization vector with random byte array
+    //create byte array to fill initialization vector
+    //byte[] initVector = new byte[16];
+    //new random number to randomize initialization vector
+    //SecureRandom randomNumber = new SecureRandom();
+    //fill byte array with random numbers
+    //randomNumber.nextBytes(initVector);
+    //set up initialization vector with random byte array
+    //ivpspec = new IvParameterSpec(initVector);
 
     //save init vector to a file/db?
 
-    //generate and set the random key
-    setKey(genKey(keySize));
-    StringBuilder strBuilder = new StringBuilder();
+    //key
+    String encryptString;
+    Base64 b64 = new Base64();
 
     try {
         //set up the Cipher object with the secret key and the initialization vector
-        stego.init(Cipher.ENCRYPT_MODE, key, ivpspec);
-        byte[] in = msg.getBytes("UTF-8"); //put message in byte array
-        byte[] out = stego.doFinal(in); //encrypt message using Cipher object and store in byte array
-        strBuilder.append(Arrays.toString(out)); //*****this doesn't work, look into using base64 encoder for conversion*****
-    } catch (Exception ex) { // catch if we run into issues.
+        stego = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        stego.init(Cipher.ENCRYPT_MODE, getKey(), ivpspec);
+        //put message in byte array
+        byte[] in = msg.getBytes("UTF-8");
+        System.out.print("Message as a byte array: ");
+        for(byte a : in) {
+          System.out.print(a);
+        }
+        System.out.println();
+        //encrypt message using Cipher object and store in byte array
+        byte[] out = stego.doFinal(in);
+        System.out.print("Encrypted message as byte array: ");
+        for(byte b : out) {
+          System.out.print(b);
+        }
+        System.out.println();
+        encryptString = b64.encodeToString(out).trim();
+        System.out.print("\nEncrypted message as a string: " + encryptString + "\n");
+        //catch if we run into issues
+    } catch (Exception ex) {
       ex.printStackTrace();
-        return "Something went terribly wrong..... contact support"; // display something went wrong if
-        // it does
+        // display something went wrong if it does
+        return "Something went terribly wrong..... contact support";
+
     }
-    return strBuilder.toString();//change this if we implement base64 encoding
+    return encryptString;
 
 
   }
@@ -71,9 +92,6 @@ public class Encrypt extends Cryptography {
       }
 
       KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-      keyGen.init(keySize);
-      
-
       return keyGen.generateKey();
     } catch (final NoSuchAlgorithmException e) {
       // AES functionality is part of java se
