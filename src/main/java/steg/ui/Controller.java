@@ -367,7 +367,7 @@ public class Controller extends StegMeister implements Initializable {
 
     InsertData insertDB = new InsertData();
     try {
-      insertDB.insert_Key("somelamekey", result.get());
+      insertDB.insert_Key("somelamekey", result.get(), "iv");
     } catch (SQLException e) {
       e.printStackTrace();
     }

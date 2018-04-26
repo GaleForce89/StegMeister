@@ -161,6 +161,14 @@
                                                 </TableView>
                                                 <VBox stylesheets="@listview.css">
                                                    <children>
+                                                      <JFXButton styleClass="JFXbutton" text="⬆">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <tooltip>
+                                                            <Tooltip text="Load Key" />
+                                                         </tooltip>
+                                                      </JFXButton>
                                                       <JFXButton onAction="#savetoDB" ripplerFill="#615a5a" styleClass="JFXbutton" text="💾">
                                                          <font>
                                                             <Font size="18.0" />
@@ -572,7 +580,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <StatusBar fx:id="statusBar" text="No key loaded.">
+            <StatusBar fx:id="statusBar" text="No key loaded">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
