@@ -111,6 +111,12 @@ public class Controller extends StegMeister implements Initializable {
   /** Set the encrypt pane to visible. */
   public void setEncryptPane() {
     // Set the visibility of panes.
+    if(steg.cryptography.Cryptography.getKeyStr() == null) {
+      statusBar.setText("Load or generate a key before you try to encrypt!");
+      return;
+    }
+    else
+    statusBar.setText("Currently loaded key: " + steg.cryptography.Cryptography.getKeyword());
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(true);
     decryptPane.visibleProperty().set(false);
@@ -125,6 +131,12 @@ public class Controller extends StegMeister implements Initializable {
   /** Set decrypt pane to be visible. */
   public void setDecryptPane() {
     // Set the visibility of panes.
+    if(steg.cryptography.Cryptography.getKeyStr() == null) {
+      statusBar.setText("Load or generate a key before you try to encrypt!");
+      return;
+    }
+    else
+      statusBar.setText("Currently loaded key: " + steg.cryptography.Cryptography.getKeyword());
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(false);
     decryptPane.visibleProperty().set(true);
@@ -139,6 +151,7 @@ public class Controller extends StegMeister implements Initializable {
   /** Set plain pane to be visible. */
   public void setPlainPane() {
     // Set the visibility of panes.
+    statusBar.setText("Plaintext mode. Encryption key not currently in use.");
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(false);
     decryptPane.visibleProperty().set(false);
@@ -153,6 +166,7 @@ public class Controller extends StegMeister implements Initializable {
   /** Set reveal pane to be visible. */
   public void setRevealPane() {
     // Set the visibility of panes.
+    statusBar.setText("Plaintext mode. Encryption key not currently in use.");
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(false);
     decryptPane.visibleProperty().set(false);
@@ -224,12 +238,17 @@ public class Controller extends StegMeister implements Initializable {
     }
 
 
+  /** Generate a random key and set it as the currently active key. */
+  public void generateKey() {
+      steg.cryptography.Cryptography.setKey(steg.cryptography.Cryptography.genKey());
+      statusBar.setText("Using a randomly generated key. Remember to save it if you want to use it!");
+  }
+
   /**
    * Open file chooser and load the selected image into memory.
    *
    */
   public void loadImage()  {
-
     // create new filechooser built in javafx dailog.
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open image file"); // set title
@@ -247,13 +266,13 @@ public class Controller extends StegMeister implements Initializable {
 
         // need to set the correct txt field.
         if (plainPane.isVisible()) {
+
           fileHideTxt.setText(file.toString());
 
           // clear other text fields
           fileRevealTxt.clear();
           fileEncryptTxt.clear();
           fileDecryptTxt.clear();
-          fileKeyTxt.clear();
         } else if (revealPane.isVisible()) {
           fileRevealTxt.setText(file.toString());
 
@@ -261,7 +280,6 @@ public class Controller extends StegMeister implements Initializable {
           fileHideTxt.clear();
           fileEncryptTxt.clear();
           fileDecryptTxt.clear();
-          fileKeyTxt.clear();
         } else if (encryptPane.isVisible()) {
           fileEncryptTxt.setText(file.toString());
 
@@ -269,8 +287,13 @@ public class Controller extends StegMeister implements Initializable {
           fileRevealTxt.clear();
           fileHideTxt.clear();
           fileDecryptTxt.clear();
-          fileKeyTxt.clear();
+        } else if (decryptPane.isVisible()) {
+          fileDecryptTxt.setText(file.toString());
 
+          //clear other fields
+          fileRevealTxt.clear();
+          fileHideTxt.clear();
+          fileEncryptTxt.clear();
         }
       } catch (IOException ex) { // catch
         ex.printStackTrace();
@@ -279,7 +302,7 @@ public class Controller extends StegMeister implements Initializable {
   }
 
   /** Method to save current image from memory to disk. */
-  public void saveImage() {
+  public void saveImage() throws NoSuchPaddingException, NoSuchAlgorithmException {
 
     // similar to loadImage
     FileChooser fileChooser = new FileChooser();
@@ -293,7 +316,10 @@ public class Controller extends StegMeister implements Initializable {
     if (file != null) {
       try {
         // Encode message into image before saving. (will modify for encrypt later)
-        imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+        if(encryptPane.isVisible())
+          imageMemory = model.encoder.encodeImage(imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
+        else
+          imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
         image.setImage(imageMemory);
         // buffered image to save.
         BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
@@ -313,11 +339,21 @@ public class Controller extends StegMeister implements Initializable {
     showMsgPlain.setText(message); // set text.
   }
 
+  /** Method to reveal encrypted message in TextArea. */
+  public void showMsgEncrypt() throws NoSuchPaddingException, NoSuchAlgorithmException { //***This needs to be called by the decrypt button on the decrypt pane***
+    String encryptedMsg = model.decoder.decodeImage(imageMemory);
+    String decryptedMsg = steg.cryptography.Cryptography.decrypt(encryptedMsg);
+    showMsgEncrypt.setText(decryptedMsg);
+  }
+
   /** Called to preview the image in memory. */
-  public void previewImage() {
+  public void previewImage() throws NoSuchPaddingException, NoSuchAlgorithmException {
     // encode before showing
-    // Encode message into image before saving. (will modify for encrypt later)
-    imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+    // Encode message into image before saving
+    if(encryptPane.isVisible())
+      imageMemory = model.encoder.encodeImage(imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
+    else
+      imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
     image.setImage(imageMemory);
     image.setPreserveRatio(true); // preserve ratio
     image.setSmooth(true); // keep image smooth
@@ -371,7 +407,7 @@ public class Controller extends StegMeister implements Initializable {
     TextInputDialog dialog = new TextInputDialog("Keyword");
     dialog.initOwner(getPrimaryStage());
     dialog.setTitle("Add key to database");
-    dialog.setHeaderText("Please, enter keyword for selected key.");
+    dialog.setHeaderText("Please enter keyword for selected key.");
     dialog.setContentText("Keyword:");
 
 // Traditional way to get the response value.
@@ -379,10 +415,12 @@ public class Controller extends StegMeister implements Initializable {
 
     InsertData insertDB = new InsertData();
     try {
-      insertDB.insert_Key("somelamekey", result.get(), "iv");
+      insertDB.insert_Key(steg.cryptography.Cryptography.getKeyStr(), result.get(), steg.cryptography.Cryptography.getVector());
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    statusBar.setText("Key \"" + result.get() + "\" saved to the database.");
+    steg.cryptography.Cryptography.setKeyword(result.get());
 
   }
 

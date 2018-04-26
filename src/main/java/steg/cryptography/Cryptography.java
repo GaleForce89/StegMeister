@@ -2,8 +2,8 @@ package steg.cryptography;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -13,10 +13,10 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-/** The cipher class is the main class used for encrypting/decrypting a file */
+/** The Cryptography class is the main class used for encrypting/decrypting a file */
 public class Cryptography {
   private static SecretKey key; // used to enter password
-  private static int keySize = 128; // used to set keysize
+  private static String keyword; //keyword tied to currently loaded key
   private static Cipher stego; // cipher object
   private static byte[] encryptVector; //initialization vector
   private static Base64 b64 = new Base64(); //used for encoding a byte array into a string and vice versa
@@ -29,33 +29,36 @@ public class Cryptography {
 
   /** Get current encryption initialization vector */
   public static String getVector() {
-    return b64.encodeToString(encryptVector).trim();
+      return b64.encodeToString(encryptVector).trim();
   }
 
-  /** Clear class variables */
-  public static void clearVariables() {
-    key = null;
-    encryptVector = null;
+  /** Get the current key's keyword */
+  public static String getKeyword() {
+
+    return keyword;
+  }
+
+  /** Set the current key's keyword */
+  public static void setKeyword(String kw) {
+
+    keyword = kw;
   }
 
   /** Encrypt method */
   public static String encrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
-    initCipher();
-
-    //*setKey(genKey(keySize));
-    encryptVector = new byte[16];
-    SecureRandom randomNumber = new SecureRandom();
-    randomNumber.nextBytes(encryptVector);
+    //set up the cipher
+    if(stego == null)
+      initCipher();
+    //create the IvParameterSpec with the initialization vector
     IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
-
     String encryptString;
-    //*Base64 b64 = new Base64();
 
     try {
-      //set up the Cipher object with the secret key and the initialization vector
+      //set up the Cipher object with the secret key and the IvParameterSpec
       stego.init(Cipher.ENCRYPT_MODE, key, ivpspec);
       //put message in byte array
       byte[] in = msg.getBytes("UTF-8");
+      //encrypt message
       byte[] out = stego.doFinal(in);
       //encode the byte array into a string
       encryptString = b64.encodeToString(out).trim();
@@ -71,14 +74,15 @@ public class Cryptography {
   }
 
   /**Decrypt method */
-  public static String decrypt(String msg, String initStr) throws NoSuchPaddingException, NoSuchAlgorithmException {
-    initCipher();
+  public static String decrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
+    //set up the cipher
+      if(stego == null)
+          initCipher();
     //use base64 object to decode the encrypted string into a byte array
     byte[] decoded = b64.decode(msg);
-    byte[] initVector = b64.decode(initStr);
 
     String finalString;
-    IvParameterSpec ivpspec = new IvParameterSpec(initVector);
+    IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
     try {
       //set up the cipher object to decrypt using the key and IvParameterSpec
       stego.init(Cipher.DECRYPT_MODE, key, ivpspec);
@@ -98,8 +102,11 @@ public class Cryptography {
    *
    * @return key
    */
-  public static SecretKey getKey() {
-    return key;
+  public static String getKeyStr() {
+    if(key == null)
+      return null;
+    byte[] array = key.getEncoded();
+    return b64.encodeAsString(array).trim();
   }
 
   /**
@@ -112,45 +119,33 @@ public class Cryptography {
   }
 
   /** Generate and set a random secret key */
-  public static SecretKey genKey() throws InvalidParameterException { //* removed keySize from parameters
+  public static SecretKey genKey() throws InvalidParameterException {
 
     try {
-      // throw exception if key size is too large
-      if (Cipher.getMaxAllowedKeyLength("AES") < keySize) {
-        // unlimited crypto is not installed
-        throw new InvalidParameterException(
-                "Key size of " + keySize + "bits not supported in this runtime, download JCE files");
-      }
-
       KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+
+      encryptVector = new byte[16];
+      SecureRandom randomNumber = new SecureRandom();
+      randomNumber.nextBytes(encryptVector);
+
       return keyGen.generateKey();
     } catch (final NoSuchAlgorithmException e) {
       // AES functionality is part of java se
-      throw new IllegalStateException("AES should be preset, please reconfigure java", e);
+      throw new IllegalStateException("AES should be preset, please reconfigure Java.", e);
     }
   }
 
-  /**
-   * Save the current key to a file for later use
-   *
-   * @param path The path and file name to save the key
-   */
-  public static void saveKey(String path) {
-    try (FileOutputStream out = new FileOutputStream(path)) {
-      byte[] keys = key.getEncoded();
-      out.write(keys);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Check the maximum key size supported by the jre
-   *
-   * @return Key size as int
-   * @throws NoSuchAlgorithmException
-   */
-  public static int maxKeySize() throws NoSuchAlgorithmException {
-    return Cipher.getMaxAllowedKeyLength("AES");
-  }
+  ///**
+   //* Save the current key to a file for later use
+   //*
+   //* @param path The path and file name to save the key
+   //*/
+  //public static void saveKey(String path) {
+    //try (FileOutputStream out = new FileOutputStream(path)) {
+      //byte[] keys = key.getEncoded();
+      //out.write(keys);
+    //} catch (IOException e) {
+      //e.printStackTrace();
+    //}
+  //}
 }
