@@ -21,12 +21,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
-//* changed to Cryptography
-import steg.cryptography.Cryptography;
 import steg.database.*;
 import steg.steganography.Model;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import org.apache.commons.codec.binary.Base64;
 
 public class Controller extends StegMeister implements Initializable {
 
@@ -44,9 +44,6 @@ public class Controller extends StegMeister implements Initializable {
 
   /**
    * Default controller constructor.
-   *
-   * @throws NoSuchPaddingException If padding DNE.
-   * @throws NoSuchAlgorithmException if algo DNE.
    */
   public Controller() {
     this.model = new Model();
@@ -254,11 +251,26 @@ public class Controller extends StegMeister implements Initializable {
 
           // clear other text fields
           fileRevealTxt.clear();
+          fileEncryptTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
         } else if (revealPane.isVisible()) {
           fileRevealTxt.setText(file.toString());
 
           // clear other fields
           fileHideTxt.clear();
+          fileEncryptTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
+        } else if (encryptPane.isVisible()) {
+          fileEncryptTxt.setText(file.toString());
+
+          // clear other fields
+          fileRevealTxt.clear();
+          fileHideTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
+
         }
       } catch (IOException ex) { // catch
         ex.printStackTrace();
