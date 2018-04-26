@@ -2,8 +2,8 @@ package steg.cryptography;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -13,7 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-/** The cipher class is the main class used for encrypting/decrypting a file */
+/** The Cryptography class is the main class used for encrypting/decrypting a file */
 public class Cryptography {
   private static SecretKey key; // used to enter password
   private static String keyword; //keyword tied to currently loaded key
@@ -34,18 +34,21 @@ public class Cryptography {
 
   /** Get the current key's keyword */
   public static String getKeyword() {
-      return keyword;
+
+    return keyword;
   }
 
   /** Set the current key's keyword */
   public static void setKeyword(String kw) {
-      keyword = kw;
+
+    keyword = kw;
   }
 
   /** Encrypt method */
   public static String encrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
     //set up the cipher
-    initCipher();
+    if(stego == null)
+      initCipher();
     //create the IvParameterSpec with the initialization vector
     IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
     String encryptString;
@@ -73,7 +76,8 @@ public class Cryptography {
   /**Decrypt method */
   public static String decrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
     //set up the cipher
-    initCipher();
+      if(stego == null)
+          initCipher();
     //use base64 object to decode the encrypted string into a byte array
     byte[] decoded = b64.decode(msg);
 
@@ -131,17 +135,17 @@ public class Cryptography {
     }
   }
 
-  /**
-   * Save the current key to a file for later use
-   *
-   * @param path The path and file name to save the key
-   */
-  public static void saveKey(String path) {
-    try (FileOutputStream out = new FileOutputStream(path)) {
-      byte[] keys = key.getEncoded();
-      out.write(keys);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  ///**
+   //* Save the current key to a file for later use
+   //*
+   //* @param path The path and file name to save the key
+   //*/
+  //public static void saveKey(String path) {
+    //try (FileOutputStream out = new FileOutputStream(path)) {
+      //byte[] keys = key.getEncoded();
+      //out.write(keys);
+    //} catch (IOException e) {
+      //e.printStackTrace();
+    //}
+  //}
 }
