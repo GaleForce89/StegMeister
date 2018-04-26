@@ -19,13 +19,14 @@ public class InsertData {
     return conn;
   }
 
-  public void insert_Key(String key, String keyword) throws SQLException {
+  public void insert_Key(String key, String keyword, String iv) throws SQLException {
     // prepare statement
-    String sql = "INSERT INTO keys(key, keyword) VALUES(?,?)";
+    String sql = "INSERT INTO keys(key, keyword, iv) VALUES(?,?,?)";
     try (Connection conn = this.connect();
         PreparedStatement pstmnt = conn.prepareStatement(sql)) {
       pstmnt.setString(1, key);
       pstmnt.setString(2, keyword);
+      pstmnt.setString(3, iv);
       // execute statement
       pstmnt.executeUpdate();
 

@@ -14,7 +14,8 @@ public class CreateTable {
         "CREATE TABLE IF NOT EXISTS keys (\n"
             + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
             + " key TEXT NOT NULL, \n"
-            + " keyword TEXT NOT NULL);";
+            + " keyword TEXT NOT NULL, \n" +
+                " iv TEXT NOT NULL);";
     try (Connection conn = DriverManager.getConnection(url)) {
       // create query
       Statement stmnt = conn.createStatement();
@@ -24,8 +25,8 @@ public class CreateTable {
 
       //insert default keys
       InsertData insertDefault = new InsertData();
-      insertDefault.insert_Key("thisistestkey", "DONT DO IT!");
-      insertDefault.insert_Key("IWOULDNOTUSETHISKEY#@$@#$#@$", "keywords are useful");
+      insertDefault.insert_Key("thisistestkey", "DONT DO IT!", "IVKDF");
+      insertDefault.insert_Key("IWOULDNOTUSETHISKEY#@$@#$#@$", "keywords are useful", "ASDFDFAS");
 
 
       // output if table created

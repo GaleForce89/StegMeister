@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class savekey
 {
-
+/*
     public static void main(String[] args)
     {
         steg.database.InsertData needKey = new steg.database.InsertData();
@@ -30,4 +30,5 @@ public class savekey
             e.printStackTrace();
         }
     }
+    */
 }

@@ -21,11 +21,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
-import steg.cryptography.Ciph;
 import steg.database.*;
 import steg.steganography.Model;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,33 +35,17 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import org.apache.commons.codec.binary.Base64;
 
 public class Controller extends StegMeister implements Initializable {
-  /** Private ciph for encryption/decryption. */
-  private Ciph cryptogram; // cipher object.
 
   /** Private model for encoder/decoder. */
   private Model model;
 
   /**
-   * create the connection object for DB, may be moved later.
-   */
-  Connect connObj = new Connect();
-
-  /**
-   * create the DBObj to create db if DNE, may be moved later.
-   */
-  CreateDB DBObj = new CreateDB();
-
-
-  /**
    * Default controller constructor.
-   *
-   * @throws NoSuchPaddingException If padding DNE.
-   * @throws NoSuchAlgorithmException if algo DNE.
    */
-  public Controller() throws NoSuchPaddingException, NoSuchAlgorithmException {
-    this.cryptogram = new Ciph(); // initialize new ciph
+  public Controller() {
     this.model = new Model();
   }
 
@@ -95,12 +79,12 @@ public class Controller extends StegMeister implements Initializable {
   /**
    * Textfield with file locations.
    */
-  @FXML private TextField fileHideTxt, fileRevealTxt;
+  @FXML private TextField fileHideTxt, fileRevealTxt, fileDecryptTxt, fileEncryptTxt, fileKeyTxt;
 
   /**
    * Text area for message input/output
    */
-  @FXML private TextArea hideMsgPlain, showMsgPlain;
+  @FXML private TextArea hideMsgPlain, showMsgPlain, hideMsgEncrypt, showMsgEncrypt;
 
   /**
    * Load image file into memory separate from imageview.
@@ -231,12 +215,11 @@ public class Controller extends StegMeister implements Initializable {
           new File("DB").mkdir();
 
           //create db
-        DBObj.createNewDB("dbKeys.db");
+        steg.database.CreateDB.createNewDB("dbKeys.db");
           //create tables
-        CreateTable createT = new CreateTable();
-        createT.createNewTable();
+        steg.database.CreateTable.createNewTable();
       }
-      connObj.connect();//does not seem to be needed
+      steg.database.Connect.connect();//does not seem to be needed
     refreshDB(); //load the DB.
     }
 
@@ -245,14 +228,15 @@ public class Controller extends StegMeister implements Initializable {
    * Open file chooser and load the selected image into memory.
    *
    */
-  public void loadImage() {
+  public void loadImage()  {
+
     // create new filechooser built in javafx dailog.
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open image file"); // set title
     fileChooser
         .getExtensionFilters()
         .addAll(// filter extensions
-            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+            new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showOpenDialog(new Stage());
     if (file != null) {
       try {
@@ -267,11 +251,26 @@ public class Controller extends StegMeister implements Initializable {
 
           // clear other text fields
           fileRevealTxt.clear();
+          fileEncryptTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
         } else if (revealPane.isVisible()) {
           fileRevealTxt.setText(file.toString());
 
           // clear other fields
           fileHideTxt.clear();
+          fileEncryptTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
+        } else if (encryptPane.isVisible()) {
+          fileEncryptTxt.setText(file.toString());
+
+          // clear other fields
+          fileRevealTxt.clear();
+          fileHideTxt.clear();
+          fileDecryptTxt.clear();
+          fileKeyTxt.clear();
+
         }
       } catch (IOException ex) { // catch
         ex.printStackTrace();
@@ -287,38 +286,19 @@ public class Controller extends StegMeister implements Initializable {
     fileChooser.setTitle("Save Image");
     fileChooser
         .getExtensionFilters()
-        .addAll(// filter extensions
-            new FileChooser.ExtensionFilter("Image Files", "*.jpeg", "*.jpg", "*.png"));
+        .addAll(// filter extensions, only allowing png types
+            new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showSaveDialog(new Stage()); // show dialog
 
     if (file != null) {
       try {
-        String extension = file.getName(); // get the path
-        String fileExtension =
-            extension.substring(
-                extension.indexOf(".") + 1, file.getName().length()); // get extension.
         // Encode message into image before saving. (will modify for encrypt later)
         imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
         image.setImage(imageMemory);
         // buffered image to save.
         BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
-
-        // check if png, jpg, or jpeg.
-        switch (fileExtension) {
-          case "png":
-            ImageIO.write(bImage, "png", file);
-            break;
-          case "jpg":
-            ImageIO.write(bImage, "jpg", file);
-            break;
-          case "jpeg":
-            ImageIO.write(bImage, "jpeg", file);
-            break;
-          default:
-            // write some sort of dialog or something.
-            System.out.println("dfgs");
-            break;
-        }
+        // only allowing png types
+        ImageIO.write(bImage, "png", file);
       } catch (IOException ex) {
         System.out.println(ex.getMessage());
       }
@@ -399,7 +379,7 @@ public class Controller extends StegMeister implements Initializable {
 
     InsertData insertDB = new InsertData();
     try {
-      insertDB.insert_Key("somelamekey", result.get());
+      insertDB.insert_Key("somelamekey", result.get(), "iv");
     } catch (SQLException e) {
       e.printStackTrace();
     }
