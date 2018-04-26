@@ -12,7 +12,7 @@ public class Connect {
       String url = "jdbc:sqlite:DB/dbKeys.db";
 
       conn = DriverManager.getConnection(url);
-      //System.out.println("connection established.");
+      // System.out.println("connection established.");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     } finally {

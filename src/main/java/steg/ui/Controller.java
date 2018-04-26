@@ -1,8 +1,16 @@
 package steg.ui;
 
 // Import required packages
-//import com.jfoenix.controls.JFXButton;//currently not in use.
+// import com.jfoenix.controls.JFXButton;//currently not in use.
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -19,32 +27,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.crypto.NoSuchPaddingException;
+import javax.imageio.ImageIO;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
 import steg.database.*;
 import steg.steganography.Model;
-
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import org.apache.commons.codec.binary.Base64;
 
 public class Controller extends StegMeister implements Initializable {
 
   /** Private model for encoder/decoder. */
   private Model model;
 
-  /**
-   * Default controller constructor.
-   */
+  /** Default controller constructor. */
   public Controller() {
     this.model = new Model();
   }
@@ -57,8 +52,8 @@ public class Controller extends StegMeister implements Initializable {
   @FXML private TabPane aboutPane;
   // tabpane is different than anchor.
 
-  ///** Names assigned to menu buttons. */
-  //@FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
+  /// ** Names assigned to menu buttons. */
+  // @FXML private JFXButton keyMenu, encryptMenu, decryptMenu, plainMenu, revealMenu, aboutMenu;
   // bring in jfx buttons for menu.
   // currently not used.
 
@@ -68,7 +63,7 @@ public class Controller extends StegMeister implements Initializable {
   /** Load in the listview for keys stored in database. */
   @FXML TableView<Listkey> keyTable;
   // key listview.
-  private ObservableList<Listkey> dbList;// The table's data
+  private ObservableList<Listkey> dbList; // The table's data
 
   /** Columns for table view. */
   @FXML TableColumn<Listkey, String> keyWordCol, keyCol;
@@ -76,19 +71,13 @@ public class Controller extends StegMeister implements Initializable {
   /** Image loaded into memory for viewing. */
   @FXML private ImageView image = new ImageView();
 
-  /**
-   * Textfield with file locations.
-   */
+  /** Textfield with file locations. */
   @FXML private TextField fileHideTxt, fileRevealTxt, fileDecryptTxt, fileEncryptTxt, fileKeyTxt;
 
-  /**
-   * Text area for message input/output
-   */
+  /** Text area for message input/output */
   @FXML private TextArea hideMsgPlain, showMsgPlain, hideMsgEncrypt, showMsgEncrypt;
 
-  /**
-   * Load image file into memory separate from imageview.
-   */
+  /** Load image file into memory separate from imageview. */
   @FXML private Image imageMemory;
 
   /** Set the key pane to be visible. */
@@ -111,12 +100,11 @@ public class Controller extends StegMeister implements Initializable {
   /** Set the encrypt pane to visible. */
   public void setEncryptPane() {
     // Set the visibility of panes.
-    if(steg.cryptography.Cryptography.getKeyStr() == null) {
+    if (steg.cryptography.Cryptography.getKeyStr() == null) {
       statusBar.setText("Load or generate a key before you try to encrypt!");
       return;
-    }
-    else
-    statusBar.setText("Currently loaded key: " + steg.cryptography.Cryptography.getKeyword());
+    } else
+      statusBar.setText("Currently loaded key: " + steg.cryptography.Cryptography.getKeyword());
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(true);
     decryptPane.visibleProperty().set(false);
@@ -131,11 +119,10 @@ public class Controller extends StegMeister implements Initializable {
   /** Set decrypt pane to be visible. */
   public void setDecryptPane() {
     // Set the visibility of panes.
-    if(steg.cryptography.Cryptography.getKeyStr() == null) {
+    if (steg.cryptography.Cryptography.getKeyStr() == null) {
       statusBar.setText("Load or generate a key before you try to encrypt!");
       return;
-    }
-    else
+    } else
       statusBar.setText("Currently loaded key: " + steg.cryptography.Cryptography.getKeyword());
     keyPane.visibleProperty().set(false);
     encryptPane.visibleProperty().set(false);
@@ -224,44 +211,40 @@ public class Controller extends StegMeister implements Initializable {
 
     // default into (great for loading database)
     // Load Database if exists, else create.
-      if(!new File("DB").exists()){
-          //create directory
-          new File("DB").mkdir();
+    if (!new File("DB").exists()) {
+      // create directory
+      new File("DB").mkdir();
 
-          //create db
-        steg.database.CreateDB.createNewDB("dbKeys.db");
-          //create tables
-        steg.database.CreateTable.createNewTable();
-      }
-      steg.database.Connect.connect();//does not seem to be needed
-    refreshDB(); //load the DB.
+      // create db
+      steg.database.CreateDB.createNewDB("dbKeys.db");
+      // create tables
+      steg.database.CreateTable.createNewTable();
     }
-
+    steg.database.Connect.connect(); // does not seem to be needed
+    refreshDB(); // load the DB.
+  }
 
   /** Generate a random key and set it as the currently active key. */
   public void generateKey() {
-      steg.cryptography.Cryptography.setKey(steg.cryptography.Cryptography.genKey());
-      statusBar.setText("Using a randomly generated key. Remember to save it if you want to use it!");
+    steg.cryptography.Cryptography.setKey(steg.cryptography.Cryptography.genKey());
+    statusBar.setText("Using a randomly generated key. Remember to save it if you want to use it!");
   }
 
-  /**
-   * Open file chooser and load the selected image into memory.
-   *
-   */
-  public void loadImage()  {
+  /** Open file chooser and load the selected image into memory. */
+  public void loadImage() {
     // create new filechooser built in javafx dailog.
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open image file"); // set title
     fileChooser
         .getExtensionFilters()
-        .addAll(// filter extensions
+        .addAll( // filter extensions
             new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showOpenDialog(new Stage());
     if (file != null) {
       try {
         // work around to load images
         imageMemory = new Image(file.toURI().toURL().toString());
-        //image = new ImageView(); // create new to allow garbage collector to clear previous.
+        // image = new ImageView(); // create new to allow garbage collector to clear previous.
         image.setImage(imageMemory);
 
         // need to set the correct txt field.
@@ -290,7 +273,7 @@ public class Controller extends StegMeister implements Initializable {
         } else if (decryptPane.isVisible()) {
           fileDecryptTxt.setText(file.toString());
 
-          //clear other fields
+          // clear other fields
           fileRevealTxt.clear();
           fileHideTxt.clear();
           fileEncryptTxt.clear();
@@ -309,17 +292,18 @@ public class Controller extends StegMeister implements Initializable {
     fileChooser.setTitle("Save Image");
     fileChooser
         .getExtensionFilters()
-        .addAll(// filter extensions, only allowing png types
+        .addAll( // filter extensions, only allowing png types
             new FileChooser.ExtensionFilter("Image Files", "*.png"));
     File file = fileChooser.showSaveDialog(new Stage()); // show dialog
 
     if (file != null) {
       try {
         // Encode message into image before saving. (will modify for encrypt later)
-        if(encryptPane.isVisible())
-          imageMemory = model.encoder.encodeImage(imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
-        else
-          imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+        if (encryptPane.isVisible())
+          imageMemory =
+              model.encoder.encodeImage(
+                  imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
+        else imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
         image.setImage(imageMemory);
         // buffered image to save.
         BufferedImage bImage = SwingFXUtils.fromFXImage(imageMemory, null);
@@ -331,16 +315,17 @@ public class Controller extends StegMeister implements Initializable {
     }
   }
 
-  /**
-   * Message to reveal plain message in TextArea.
-   */
+  /** Message to reveal plain message in TextArea. */
   public void showMsgPlain() {
     String message = model.decoder.decodeImage(imageMemory); // decode
     showMsgPlain.setText(message); // set text.
   }
 
   /** Method to reveal encrypted message in TextArea. */
-  public void showMsgEncrypt() throws NoSuchPaddingException, NoSuchAlgorithmException { //***This needs to be called by the decrypt button on the decrypt pane***
+  public void showMsgEncrypt()
+      throws NoSuchPaddingException,
+          NoSuchAlgorithmException { // ***This needs to be called by the decrypt button on the
+                                     // decrypt pane***
     String encryptedMsg = model.decoder.decodeImage(imageMemory);
     String decryptedMsg = steg.cryptography.Cryptography.decrypt(encryptedMsg);
     showMsgEncrypt.setText(decryptedMsg);
@@ -350,10 +335,11 @@ public class Controller extends StegMeister implements Initializable {
   public void previewImage() throws NoSuchPaddingException, NoSuchAlgorithmException {
     // encode before showing
     // Encode message into image before saving
-    if(encryptPane.isVisible())
-      imageMemory = model.encoder.encodeImage(imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
-    else
-      imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
+    if (encryptPane.isVisible())
+      imageMemory =
+          model.encoder.encodeImage(
+              imageMemory, steg.cryptography.Cryptography.encrypt(hideMsgEncrypt.getText()));
+    else imageMemory = model.encoder.encodeImage(imageMemory, hideMsgPlain.getText());
     image.setImage(imageMemory);
     image.setPreserveRatio(true); // preserve ratio
     image.setSmooth(true); // keep image smooth
@@ -380,48 +366,48 @@ public class Controller extends StegMeister implements Initializable {
     stage.show(); // show the stage.
   }
 
-  /**
-   * Refresh the key manager DB list.
-   */
-  public void refreshDB(){
-    //Fill the list with keys from database on load.
-    RowCount rowCount = new RowCount();//create rowcount object.
-    int count = rowCount.rowCount();//set the rowcount to a temporary int.
+  /** Refresh the key manager DB list. */
+  public void refreshDB() {
+    // Fill the list with keys from database on load.
+    RowCount rowCount = new RowCount(); // create rowcount object.
+    int count = rowCount.rowCount(); // set the rowcount to a temporary int.
 
-    //create the row data object.
+    // create the row data object.
     RowData rowData = new RowData();
 
-    //Clear list before reloading.
+    // Clear list before reloading.
     dbList.clear();
 
-    for (int current = 1; current <= count; current++){ //loop through and fill list.
-      Listkey item = new Listkey(); //create new listkey object.
-      item.setStoredKey(rowData.getKey(current)); //add the key.
-      item.setKeyWord(rowData.getKeyWord(current)); //add the keyword.
+    for (int current = 1; current <= count; current++) { // loop through and fill list.
+      Listkey item = new Listkey(); // create new listkey object.
+      item.setStoredKey(rowData.getKey(current)); // add the key.
+      item.setKeyWord(rowData.getKeyWord(current)); // add the keyword.
       dbList.add(item);
     }
   }
 
-  public void savetoDB(){
-    //Create a dialog
+  public void savetoDB() {
+    // Create a dialog
     TextInputDialog dialog = new TextInputDialog("Keyword");
     dialog.initOwner(getPrimaryStage());
     dialog.setTitle("Add key to database");
     dialog.setHeaderText("Please enter keyword for selected key.");
     dialog.setContentText("Keyword:");
 
-// Traditional way to get the response value.
+    // Traditional way to get the response value.
     Optional<String> result = dialog.showAndWait();
 
     InsertData insertDB = new InsertData();
     try {
-      insertDB.insert_Key(steg.cryptography.Cryptography.getKeyStr(), result.get(), steg.cryptography.Cryptography.getVector());
+      insertDB.insert_Key(
+          steg.cryptography.Cryptography.getKeyStr(),
+          result.get(),
+          steg.cryptography.Cryptography.getVector());
     } catch (SQLException e) {
       e.printStackTrace();
     }
     statusBar.setText("Key \"" + result.get() + "\" saved to the database.");
     steg.cryptography.Cryptography.setKeyword(result.get());
-
   }
 
   // ****************DELETE AFTER UI IS COMPLETED AND INTEGRATED!

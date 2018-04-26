@@ -4,67 +4,65 @@ import java.sql.*;
 
 public class RowData {
 
-    /**
-     * Return the key from the current row.
-     * @param current The current row selected.
-     * @return key from selected row.
-     */
-    public String getKey(int current){
-        String key = null; //default null
+  /**
+   * Return the key from the current row.
+   *
+   * @param current The current row selected.
+   * @return key from selected row.
+   */
+  public String getKey(int current) {
+    String key = null; // default null
 
-        Connection conn = null; //establish a connection object.
-        try {
-            String url = "jdbc:sqlite:DB/dbKeys.db";
+    Connection conn = null; // establish a connection object.
+    try {
+      String url = "jdbc:sqlite:DB/dbKeys.db";
 
-            conn = DriverManager.getConnection(url);//connect to db
-            //sqlcount
-            String currentRow =
-                    "SELECT key FROM keys WHERE rowid =" + current + ";";
+      conn = DriverManager.getConnection(url); // connect to db
+      // sqlcount
+      String currentRow = "SELECT key FROM keys WHERE rowid =" + current + ";";
 
-            Statement getRow = conn.createStatement();//create statement object
+      Statement getRow = conn.createStatement(); // create statement object
 
-            //execute statement and get results.
-            ResultSet rowResults = getRow.executeQuery(currentRow);
+      // execute statement and get results.
+      ResultSet rowResults = getRow.executeQuery(currentRow);
 
-            key = rowResults.getString(1);
+      key = rowResults.getString(1);
 
-        } catch (SQLException e) { //catch if we fail.
-            System.out.println(e.getMessage());
-        }
-
-
-
-        return key;
+    } catch (SQLException e) { // catch if we fail.
+      System.out.println(e.getMessage());
     }
 
-    /**
-     * Get the keyword from currently selected row.
-     * @param current Current row.
-     * @return keyword.
-     */
-    public String getKeyWord(int current){
-        String keyWord = null; //default null
+    return key;
+  }
 
-        Connection conn = null; //establish a connection object.
-        try {
-            String url = "jdbc:sqlite:DB/dbKeys.db";
+  /**
+   * Get the keyword from currently selected row.
+   *
+   * @param current Current row.
+   * @return keyword.
+   */
+  public String getKeyWord(int current) {
+    String keyWord = null; // default null
 
-            conn = DriverManager.getConnection(url);//connect to db
-            //sqlcount
-            String currentRow =
-                    "SELECT keyword FROM keys WHERE rowid =" + current + ";";
+    Connection conn = null; // establish a connection object.
+    try {
+      String url = "jdbc:sqlite:DB/dbKeys.db";
 
-            Statement getRow = conn.createStatement();//create statement object
+      conn = DriverManager.getConnection(url); // connect to db
+      // sqlcount
+      String currentRow = "SELECT keyword FROM keys WHERE rowid =" + current + ";";
 
-            //execute statement and get results.
-            ResultSet rowResults = getRow.executeQuery(currentRow);
+      Statement getRow = conn.createStatement(); // create statement object
 
-            keyWord = rowResults.getString(1);
+      // execute statement and get results.
+      ResultSet rowResults = getRow.executeQuery(currentRow);
 
-        } catch (SQLException e) { //catch if we fail.
-            System.out.println(e.getMessage());
-        }
+      keyWord = rowResults.getString(1);
 
-        return keyWord;
+    } catch (SQLException e) { // catch if we fail.
+      System.out.println(e.getMessage());
     }
+
+    return keyWord;
+  }
 }
