@@ -9,8 +9,8 @@ public class InsertData {
   /// connect to the database
   // and return object
   private Connection connect() {
-    String url = "jdbc:sqlite:DB/dbKeys.db";
-    Connection conn = null;
+      String url = "jdbc:sqlite:DB/dbKeys.db";
+      Connection conn = null;
     try {
       conn = DriverManager.getConnection(url);
     } catch (SQLException e) {
