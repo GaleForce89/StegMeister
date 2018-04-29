@@ -3,82 +3,76 @@ package steg.database;
 import java.io.File;
 import java.sql.*;
 
-public class Connect {
+public class Sql {
+  /**
+   * The sql connection object.
+   */
+  Connection sql = null;//default connection to null. *NOTE* only 1 connection for entire database.
 
-  public static Connection connect() {
-    Connection conn = null;
+  /**
+   * Default sql constructor.
+   */
+  public Sql() {
     try {
-      String url = "jdbc:sqlite:DB/dbKeys.db";
+      //Check if the database exist, if not create the directory and tables. Only happens on first run.
+      if (!new File("DB/dbKeys.db").exists()) {
+        //create directory
+        new File("DB").mkdir();
 
-      conn = DriverManager.getConnection(url);
-      //System.out.println("connection established.");
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    } finally {
-      try {
-        if (conn != null) {
-          conn.close();
-        }
-      } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
-      }
-    }
-      return conn;
-  }
+        this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
 
-  public static void createNewDB(String fName) {
-    //Check if directory exists, if not create directory.
-    if(!new File("DB").exists()){
-      //create directory
-      new File("DB").mkdir();
-    }
-    // connect to DB
-    String url = "jdbc:sqlite:DB/" + fName;
+        //Create table.
+        createNewTable();
 
-    try (Connection conn = DriverManager.getConnection(url)) {
-      if (conn != null) {
-        DatabaseMetaData meta = conn.getMetaData();
-        // System.out.println("the driver name is " + meta.getDriverName());
-        // System.out.println("A new db has been created. ");
+      }else {//connect directly to database.
+        this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
-  public static void createNewTable() {
-    // SQLite connection
-    String url = "jdbc:sqlite:DB/dbKeys.db";
 
-    String sql =
+  /**
+   * Create the database table.
+   */
+  public void createNewTable() {
+    //Create the sequel command.
+       String sqlCommand =
             "CREATE TABLE IF NOT EXISTS keys (\n"
                     + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                     + " key TEXT NOT NULL, \n"
                     + " keyword TEXT NOT NULL, \n" +
                     " iv TEXT NOT NULL);";
-    try (Connection conn = DriverManager.getConnection(url)) {
+    try {
       // create query
-      Statement stmnt = conn.createStatement();
+      Statement stmnt = sql.createStatement();
 
       // execute query
-      stmnt.execute(sql);
+      stmnt.execute(sqlCommand);
 
       //insert default keys
       //InsertData insertDefault = new InsertData();
-      //insertDefault.insert_Key("thisistestkey", "DONT DO IT!", "IVKDF");
-      //insertDefault.insert_Key("IWOULDNOTUSETHISKEY#@$@#$#@$", "keywords are useful", "ASDFDFAS");
+      insert_Key("thisistestkey", "DONT DO IT!", "IVKDF");
+      insert_Key("IWOULDNOTUSETHISKEY#@$@#$#@$", "keywords are useful", "ASDFDFAS");
 
-
-      // output if table created
-      //System.out.println("Table created");
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
   }
+
+  /**
+   * Insert values into the database.
+   * @param key The users key.
+   * @param keyword User keyword.
+   * @param iv Initialization vector.
+   * @throws SQLException
+   */
   public void insert_Key(String key, String keyword, String iv) throws SQLException {
     // prepare statement
-    String sql = "INSERT INTO keys(key, keyword, iv) VALUES(?,?,?)";
-    try (Connection conn = this.connect();
-         PreparedStatement pstmnt = conn.prepareStatement(sql)) {
+    String sqlCommand = "INSERT INTO keys(key, keyword, iv) VALUES(?,?,?)";
+
+    try {//create the sql statement.
+      PreparedStatement pstmnt = sql.prepareStatement(sqlCommand);
       pstmnt.setString(1, key);
       pstmnt.setString(2, keyword);
       pstmnt.setString(3, iv);
@@ -90,20 +84,21 @@ public class Connect {
     }
   }
 
+  /**
+   * Get the current database row count.
+   * @return number of rows.
+   */
   public int rowCount() {
     int count = 0;//default to 0
 
-    Connection conn = null; //establish a connection object.
     try {
-      String url = "jdbc:sqlite:DB/dbKeys.db";
 
-      conn = DriverManager.getConnection(url);//connect to db
       //sqlcount
       String sqlCount =
               "SELECT COUNT(*)\n" +
                       "FROM keys;";
 
-      Statement getCount = conn.createStatement();//create statement object
+      Statement getCount = sql.createStatement();//create statement object
 
       //execute statement and get results.
       ResultSet countResults = getCount.executeQuery(sqlCount);
@@ -127,16 +122,12 @@ public class Connect {
   public String getKey(int current){
     String key = null; //default null
 
-    Connection conn = null; //establish a connection object.
     try {
-      String url = "jdbc:sqlite:DB/dbKeys.db";
-
-      conn = DriverManager.getConnection(url);//connect to db
       //sqlcount
       String currentRow =
               "SELECT key FROM keys WHERE rowid =" + current + ";";
 
-      Statement getRow = conn.createStatement();//create statement object
+      Statement getRow = sql.createStatement();//create statement object
 
       //execute statement and get results.
       ResultSet rowResults = getRow.executeQuery(currentRow);
@@ -147,9 +138,7 @@ public class Connect {
       System.out.println(e.getMessage());
     }
 
-
-
-    return key;
+    return key; //return the key.
   }
 
   /**
@@ -160,16 +149,12 @@ public class Connect {
   public String getKeyWord(int current){
     String keyWord = null; //default null
 
-    Connection conn = null; //establish a connection object.
     try {
-      String url = "jdbc:sqlite:DB/dbKeys.db";
-
-      conn = DriverManager.getConnection(url);//connect to db
       //sqlcount
       String currentRow =
               "SELECT keyword FROM keys WHERE rowid =" + current + ";";
 
-      Statement getRow = conn.createStatement();//create statement object
+      Statement getRow = sql.createStatement();//create statement object
 
       //execute statement and get results.
       ResultSet rowResults = getRow.executeQuery(currentRow);
