@@ -8,7 +8,7 @@ import steg.cryptography.Cryptography;
 public class KeyFile
 {
     /*rightKey Method*/
-    public void wrightKey()
+    public void writetKey()
     {
         Cryptography crypt = new Cryptography();
 
@@ -49,7 +49,7 @@ public class KeyFile
             String key = w.readLine();
             crypt.setKey(key);
             String vector = w.readLine();
-            crypt.setKeyword(vector);
+            crypt.setVector(vector);
 
 
         } catch (IOException e) {
