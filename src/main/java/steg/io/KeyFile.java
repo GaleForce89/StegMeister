@@ -7,7 +7,7 @@ import steg.cryptography.Cryptography;
 /**KeyFile Class*/
 public class KeyFile
 {
-    /*rightKey Method*/
+    /*writeKey Method*/
     public void writetKey()
     {
         Cryptography crypt = new Cryptography();
