@@ -8,7 +8,7 @@ import steg.cryptography.Cryptography;
 /**SaveKey Method*/
 public class SaveKey
 {
-    public void GetKey(String[] args)
+    public void GetKey()
     {
         Cryptography crypt = new Cryptography();
 
