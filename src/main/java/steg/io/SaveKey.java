@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class SaveKey
 {
+    //Connect to database
     private Connection connect() {
         String url = "jdbc:sqlite:DB/dbKeys.db";
         Connection conn = null;
@@ -24,22 +25,23 @@ public class SaveKey
 
     public void GetKey(String[] args)
     {
-        steg.database.InsertData needKey = new steg.database.InsertData();
-        steg.database.Connect Connect = new steg.database.Connect();
-
+        //sql for get key and keyword from database
         String sqlKey = "SELECT * FROM keys WHERE key";
         String sqlKeyword = "SELECT * FROM key WHERE keyword";
 
 
         try (Connection conn = this.connect())
         {
+            //bufferedWriter and PreparedStatement
             BufferedWriter w = new BufferedWriter ( new FileWriter(".\\text.txt") );
             PreparedStatement psKey = conn.prepareStatement(sqlKey);
             PreparedStatement psKeyword = conn.prepareStatement(sqlKeyword);
 
+            //get info from table and set as variables
             int key = psKey.executeUpdate();
             int keyword = psKeyword.executeUpdate();
 
+            //print variables
             w.write(key);
             w.write(","); //when reading in file the "," will help distinguish end of key
             w.write(keyword);
