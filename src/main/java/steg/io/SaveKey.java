@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import steg.cryptography.Cryptography;
 
-
-public class SaveKey /**SaveKey Method*/
+/**SaveKey Method*/
+public class SaveKey
 {
     public void GetKey(String[] args)
     {
