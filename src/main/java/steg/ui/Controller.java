@@ -21,11 +21,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
-import steg.database.*;
+import steg.database.Sql;
 import steg.steganography.Model;
 
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import org.apache.commons.codec.binary.Base64;
 
 public class Controller extends StegMeister implements Initializable {
 
@@ -43,10 +41,16 @@ public class Controller extends StegMeister implements Initializable {
   private Model model;
 
   /**
+   * The database sql object. Used for every statement dealing with the database.
+   */
+  private Sql sql = new Sql();
+
+  /**
    * Default controller constructor.
    */
   public Controller() {
     this.model = new Model();
+    //this.sql = new Sql();
   }
 
   /** The anchor panes for key, encrypt, decrypt, plain text, and reveal panes. */
@@ -224,16 +228,16 @@ public class Controller extends StegMeister implements Initializable {
 
     // default into (great for loading database)
     // Load Database if exists, else create.
-      if(!new File("DB").exists()){
+     /* if(!new File("DB").exists()){
           //create directory
           new File("DB").mkdir();
 
           //create db
-        steg.database.CreateDB.createNewDB("dbKeys.db");
+        sql.createNewDB("dbKeys.db");
           //create tables
         steg.database.CreateTable.createNewTable();
       }
-      steg.database.Connect.connect();//does not seem to be needed
+      Sql.connect();//does not seem to be needed*/
     refreshDB(); //load the DB.
     }
 
@@ -385,19 +389,19 @@ public class Controller extends StegMeister implements Initializable {
    */
   public void refreshDB(){
     //Fill the list with keys from database on load.
-    RowCount rowCount = new RowCount();//create rowcount object.
-    int count = rowCount.rowCount();//set the rowcount to a temporary int.
+    //RowCount rowCount = new RowCount();//create rowcount object.
+    int count = sql.rowCount();//set the rowcount to a temporary int.
 
     //create the row data object.
-    RowData rowData = new RowData();
+    //RowData rowData = new RowData();
 
     //Clear list before reloading.
     dbList.clear();
 
     for (int current = 1; current <= count; current++){ //loop through and fill list.
       Listkey item = new Listkey(); //create new listkey object.
-      item.setStoredKey(rowData.getKey(current)); //add the key.
-      item.setKeyWord(rowData.getKeyWord(current)); //add the keyword.
+      item.setStoredKey(sql.getKey(current)); //add the key.
+      item.setKeyWord(sql.getKeyWord(current)); //add the keyword.
       dbList.add(item);
     }
   }
@@ -413,9 +417,9 @@ public class Controller extends StegMeister implements Initializable {
 // Traditional way to get the response value.
     Optional<String> result = dialog.showAndWait();
 
-    InsertData insertDB = new InsertData();
+    //InsertData insertDB = new InsertData();
     try {
-      insertDB.insert_Key(steg.cryptography.Cryptography.getKeyStr(), result.get(), steg.cryptography.Cryptography.getVector());
+      sql.insert_Key(steg.cryptography.Cryptography.getKeyStr(), result.get(), steg.cryptography.Cryptography.getVector());
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -477,7 +481,7 @@ public class Controller extends StegMeister implements Initializable {
     System.out.println(Ciph.Encrypt.maxKeySize());
     System.out.println(Ciph.Encrypt.getKey()); // console output
     test1.setText(Ciph.Encrypt.getKey().toString()); // gui output
-    Connect connObj = new Connect();
+    Sql connObj = new Sql();
     connObj.connect();
     InsertData insertDOBJ = new InsertData();
       try {
