@@ -129,7 +129,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </TextField>
-                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Load">
+                                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#loadKey" prefHeight="25.0" prefWidth="72.0" text="Load">
                                                    <HBox.margin>
                                                       <Insets right="40.0" top="30.0" />
                                                    </HBox.margin>
@@ -161,7 +161,7 @@
                                                 </TableView>
                                                 <VBox stylesheets="@listview.css">
                                                    <children>
-                                                      <JFXButton styleClass="JFXbutton" text="⬆">
+                                                      <JFXButton onAction="#loadFromDb" styleClass="JFXbutton" text="⬆">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -185,7 +185,7 @@
                                                             <Tooltip text="Refresh database" />
                                                          </tooltip>
                                                       </JFXButton>
-                                                      <JFXButton styleClass="JFXbutton" text="🚫">
+                                                      <JFXButton onAction="#deleteFromDb" styleClass="JFXbutton" text="🚫">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -213,7 +213,7 @@
                                                       <Insets bottom="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Save key to file">
+                                                <Button mnemonicParsing="false" onAction="#saveKey" prefHeight="30.0" prefWidth="120.0" text="Save key to file">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
@@ -553,7 +553,7 @@
                                                    <children>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Special thanks to:&#10;&#10;Intellij (student developer)&#10;Github&#10;The git team&#10;Apache commons codec team&#10;JFoenix&#10;ControlxFX&#10;FontAwsomeFX&#10;Gradle&#10;PMD&#10;Spotbugs&#10;Checkstyle&#10;&#10;&amp; The OpenSource community for making this project possible." wrapText="true" HBox.hgrow="ALWAYS">
+                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Special thanks to:&#10;&#10;Intellij (student developer)&#10;Github&#10;The git team&#10;Apache commons codec team&#10;JFoenix&#10;ControlsFX&#10;FontAwsomeFX&#10;Gradle&#10;PMD&#10;Spotbugs&#10;Checkstyle&#10;&#10;&amp; The OpenSource community for making this project possible." wrapText="true" HBox.hgrow="ALWAYS">
                                                                <HBox.margin>
                                                                   <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
                                                                </HBox.margin>
@@ -580,7 +580,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <StatusBar fx:id="statusBar" text="No key loaded">
+            <StatusBar fx:id="statusBar" text="No key loaded.">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
