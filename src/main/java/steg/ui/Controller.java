@@ -46,14 +46,18 @@ public class Controller extends StegMeister implements Initializable {
   /**
    * The database sql object. Used for every statement dealing with the database.
    */
+
   private Sql sql;
+
 
   /**
    * Default controller constructor.
    */
   public Controller() {
     this.model = new Model();
+
     this.sql = new Sql();
+
   }
 
   /**
@@ -288,6 +292,7 @@ public class Controller extends StegMeister implements Initializable {
 
     // default into (great for loading database)
     // Load Database if exists, else create.
+
     if (!new File("DB").exists()) {
       // create directory
       new File("DB").mkdir();
@@ -296,6 +301,7 @@ public class Controller extends StegMeister implements Initializable {
       //sql.createNewDB("dbKeys.db");
       // create tables
       //sql.createNewTable();
+
     }
     //steg.database.Connect.connect(); // does not seem to be needed
     refreshDB(); // load the DB.
@@ -529,6 +535,7 @@ public class Controller extends StegMeister implements Initializable {
         //add the item to the list
         dbList.add(item);
       }
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -538,6 +545,7 @@ public class Controller extends StegMeister implements Initializable {
    * Load a key from the database
    */
   public void loadFromDb() {
+
 
     try {
       //get key and keyword from Listkey table
@@ -559,6 +567,7 @@ public class Controller extends StegMeister implements Initializable {
       }
     } catch(Exception e){
       e.printStackTrace();
+
       }
   }
 

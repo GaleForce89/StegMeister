@@ -9,6 +9,7 @@ public class Sql {
    */
   private Connection sql = null;//default connection to null. *NOTE* only 1 connection for entire database.
 
+
   /**
    * Default sql constructor.
    */
@@ -20,15 +21,15 @@ public class Sql {
         //create directory
         new File("DB").mkdir();
 
+
         sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
+
         //Create table.
         createNewTable();
 
       }else {//connect directly to database.
         this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
       }
-
-
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -38,6 +39,7 @@ public class Sql {
   /**
    * Create the database table.
    */
+
   private void createNewTable() {
     //Create the sequel command.
     String sqlCommand =
@@ -55,6 +57,7 @@ public class Sql {
 
       //insert default keys
       //InsertData insertDefault = new InsertData();
+
       insert_Key("pwmBLWgstaNrHNE+vzI93w==", "Test Key 1", "J/y4+dzVT01uFFz7MAcd0A==");
       insert_Key("xCslWtmKhMIZnjz3dNfP0w==", "Test Key 2", "NJKdkWtg2fFAPZujbE3KEQ==");
 
@@ -88,6 +91,7 @@ public class Sql {
   }
 
   /**
+
    * Returns a ResultSet with every key and keyword from the database
    */
   public ResultSet getUpdateInfo() {
