@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.StatusBar?>
+
 <AnchorPane prefHeight="490.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steg.ui.Controller">
    <children>
       <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -86,7 +97,7 @@
                               </Tooltip>
                            </tooltip>
                         </JFXButton>
-                        <AnchorPane style="-fx-background-color: #eaf8ff;" VBox.vgrow="ALWAYS" />
+                        <AnchorPane style="-fx-background-color: #d3f8ff;" VBox.vgrow="ALWAYS" />
                      </children>
                      <HBox.margin>
                         <Insets />
@@ -118,7 +129,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </TextField>
-                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Load">
+                                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#loadKey" prefHeight="25.0" prefWidth="72.0" text="Load">
                                                    <HBox.margin>
                                                       <Insets right="40.0" top="30.0" />
                                                    </HBox.margin>
@@ -150,7 +161,7 @@
                                                 </TableView>
                                                 <VBox stylesheets="@listview.css">
                                                    <children>
-                                                      <JFXButton styleClass="JFXbutton" text="⬆">
+                                                      <JFXButton onAction="#loadFromDb" styleClass="JFXbutton" text="⬆">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -174,7 +185,7 @@
                                                             <Tooltip text="Refresh database" />
                                                          </tooltip>
                                                       </JFXButton>
-                                                      <JFXButton styleClass="JFXbutton" text="🚫">
+                                                      <JFXButton onAction="#deleteFromDb" styleClass="JFXbutton" text="🚫">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -202,7 +213,7 @@
                                                       <Insets bottom="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Save key to file">
+                                                <Button mnemonicParsing="false" onAction="#saveKey" prefHeight="30.0" prefWidth="120.0" text="Save key to file">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
@@ -279,7 +290,7 @@
                                                       <Insets bottom="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Save">
+                                                <Button mnemonicParsing="false" onAction="#saveImage" prefHeight="30.0" prefWidth="120.0" text="Save">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
@@ -348,7 +359,7 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER">
                                              <children>
-                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Decrypt">
+                                                <Button mnemonicParsing="false" onAction="#showMsgEncrypt" prefHeight="30.0" prefWidth="120.0" text="Decrypt">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
@@ -542,7 +553,7 @@
                                                    <children>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Special thanks to:&#10;&#10;Intellij (student developer)&#10;Github&#10;The git team&#10;Apache commons codec team&#10;JFoenix&#10;ControlxFX&#10;FontAwsomeFX&#10;Gradle&#10;PMD&#10;Spotbugs&#10;Checkstyle&#10;&#10;&amp; The OpenSource community for making this project possible." wrapText="true" HBox.hgrow="ALWAYS">
+                                                            <TextArea editable="false" stylesheets="@CenterText.css" text="&#10;Special thanks to:&#10;&#10;Intellij (student developer)&#10;Github&#10;The git team&#10;Apache commons codec team&#10;JFoenix&#10;ControlsFX&#10;FontAwsomeFX&#10;Gradle&#10;PMD&#10;Spotbugs&#10;Checkstyle&#10;&#10;&amp; The OpenSource community for making this project possible." wrapText="true" HBox.hgrow="ALWAYS">
                                                                <HBox.margin>
                                                                   <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
                                                                </HBox.margin>
@@ -569,7 +580,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <StatusBar fx:id="statusBar" text="No key loaded">
+            <StatusBar fx:id="statusBar" text="No key loaded.">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

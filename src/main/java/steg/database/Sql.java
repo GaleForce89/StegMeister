@@ -7,19 +7,22 @@ public class Sql {
   /**
    * The sql connection object.
    */
-  Connection sql = null;//default connection to null. *NOTE* only 1 connection for entire database.
+  private Connection sql = null;//default connection to null. *NOTE* only 1 connection for entire database.
+
 
   /**
    * Default sql constructor.
    */
   public Sql() {
     try {
+
       //Check if the database exist, if not create the directory and tables. Only happens on first run.
       if (!new File("DB/dbKeys.db").exists()) {
         //create directory
         new File("DB").mkdir();
 
-        this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
+
+        sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
 
         //Create table.
         createNewTable();
@@ -27,6 +30,7 @@ public class Sql {
       }else {//connect directly to database.
         this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
       }
+
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -35,13 +39,14 @@ public class Sql {
   /**
    * Create the database table.
    */
-  public void createNewTable() {
+
+  private void createNewTable() {
     //Create the sequel command.
-       String sqlCommand =
+    String sqlCommand =
             "CREATE TABLE IF NOT EXISTS keys (\n"
-                    + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                    //+ " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                     + " key TEXT NOT NULL, \n"
-                    + " keyword TEXT NOT NULL, \n" +
+                    + " keyword TEXT PRIMARY KEY NOT NULL, \n" +
                     " iv TEXT NOT NULL);";
     try {
       // create query
@@ -52,8 +57,9 @@ public class Sql {
 
       //insert default keys
       //InsertData insertDefault = new InsertData();
-      insert_Key("thisistestkey", "DONT DO IT!", "IVKDF");
-      insert_Key("IWOULDNOTUSETHISKEY#@$@#$#@$", "keywords are useful", "ASDFDFAS");
+
+      insert_Key("pwmBLWgstaNrHNE+vzI93w==", "Test Key 1", "J/y4+dzVT01uFFz7MAcd0A==");
+      insert_Key("xCslWtmKhMIZnjz3dNfP0w==", "Test Key 2", "NJKdkWtg2fFAPZujbE3KEQ==");
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -85,86 +91,62 @@ public class Sql {
   }
 
   /**
-   * Get the current database row count.
-   * @return number of rows.
+
+   * Returns a ResultSet with every key and keyword from the database
    */
-  public int rowCount() {
-    int count = 0;//default to 0
+  public ResultSet getUpdateInfo() {
+    String query = "SELECT key, keyword FROM keys";
+    ResultSet res = null;
+    try {
+      Statement st = sql.createStatement();
+      res = st.executeQuery(query);
+    }catch(SQLException e) {
+      e.printStackTrace();
+    }
+    return res;
+
+  }
+
+  /**
+   * Returns the init vector as a String using its corresponding keyword
+   */
+  public String getInitVector(String keyword) {
+
+    String iv = null;
 
     try {
+      ResultSet result = sql.createStatement().executeQuery("SELECT iv FROM keys WHERE keyword = \'" + keyword + "\';");
+      iv = result.getString(1);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return iv;
+  }
 
-      //sqlcount
-      String sqlCount =
-              "SELECT COUNT(*)\n" +
-                      "FROM keys;";
+  /**
+   * Deletes a row from the database using a corresponding keyword
+   */
+  public void deleteRow(String current) {
+    try {
+      sql.createStatement().executeUpdate("DELETE FROM keys WHERE keyword = \'" + current + "\';");
+    }catch(SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
-      Statement getCount = sql.createStatement();//create statement object
-
-      //execute statement and get results.
-      ResultSet countResults = getCount.executeQuery(sqlCount);
-
-      while (countResults.next()){ //loops through and count.
-        count = countResults.getInt(1);
+  /**
+   * Checks to see if an entry exists in the database with a given keyword (false if that keyword is not in the database)
+   */
+  public boolean inDb(String keyword) {
+      ResultSet result = null;
+      boolean indb = true;
+      try {
+          result = sql.createStatement().executeQuery("SELECT keyword FROM keys WHERE keyword = \'" + keyword + "\';");
+          if(!result.isBeforeFirst())
+              indb = false;
+      }catch (SQLException e) {
+          e.printStackTrace();
       }
-
-    } catch (SQLException e) { //catch if we fail.
-      System.out.println(e.getMessage());
-    }
-    //return the total row count.
-    return count;
-  }
-
-  /**
-   * Return the key from the current row.
-   * @param current The current row selected.
-   * @return key from selected row.
-   */
-  public String getKey(int current){
-    String key = null; //default null
-
-    try {
-      //sqlcount
-      String currentRow =
-              "SELECT key FROM keys WHERE rowid =" + current + ";";
-
-      Statement getRow = sql.createStatement();//create statement object
-
-      //execute statement and get results.
-      ResultSet rowResults = getRow.executeQuery(currentRow);
-
-      key = rowResults.getString(1);
-
-    } catch (SQLException e) { //catch if we fail.
-      System.out.println(e.getMessage());
-    }
-
-    return key; //return the key.
-  }
-
-  /**
-   * Get the keyword from currently selected row.
-   * @param current Current row.
-   * @return keyword.
-   */
-  public String getKeyWord(int current){
-    String keyWord = null; //default null
-
-    try {
-      //sqlcount
-      String currentRow =
-              "SELECT keyword FROM keys WHERE rowid =" + current + ";";
-
-      Statement getRow = sql.createStatement();//create statement object
-
-      //execute statement and get results.
-      ResultSet rowResults = getRow.executeQuery(currentRow);
-
-      keyWord = rowResults.getString(1);
-
-    } catch (SQLException e) { //catch if we fail.
-      System.out.println(e.getMessage());
-    }
-
-    return keyWord;
+      return indb;
   }
 }
