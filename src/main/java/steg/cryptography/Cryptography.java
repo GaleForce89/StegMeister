@@ -46,7 +46,6 @@ public class Cryptography {
 
   /** Set the current key's keyword */
   public static void setKeyword(String kw) {
-
       keyword = kw;
   }
 
@@ -56,9 +55,13 @@ public class Cryptography {
    * @return key
    */
   public static String getKeyStr() {
+    //make sure the key is not null
+    //if null, just return null
     if(key == null)
       return null;
+    //if not null, encode the key into a byte array
     byte[] array = key.getEncoded();
+    //use base 64 object to encode the byte array into a string
     return b64.encodeAsString(array).trim();
   }
 
@@ -70,7 +73,7 @@ public class Cryptography {
 
   /** Encrypt a message */
   public static String encrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
-    //set up the cipher
+    //if the cipher hasn't been initialized, do so
     if(stego == null)
       initCipher();
     //create the IvParameterSpec with the initialization vector
@@ -94,18 +97,15 @@ public class Cryptography {
 
     }
     return encryptString;
-
   }
 
   /**Decrypt a message */
   public static String decrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
-
-      //set up the cipher
+      //if the cipher hasn't been initialized, do so
       if(stego == null)
           initCipher();
       //use base64 object to decode the encrypted string into a byte array
       byte[] decoded = b64.decode(msg);
-
       String finalString;
       //set up the IvParameterSpec with the init vector to decrypt
       IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
