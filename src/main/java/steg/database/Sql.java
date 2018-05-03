@@ -20,17 +20,12 @@ public class Sql {
       if (!new File("DB/dbKeys.db").exists()) {
         //create directory
         new File("DB").mkdir();
-
-
         sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
-
         //Create table.
         createNewTable();
-
       }else {//connect directly to database.
         this.sql = DriverManager.getConnection("jdbc:sqlite:DB/dbKeys.db"); //connect to database.
       }
-
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
@@ -51,13 +46,9 @@ public class Sql {
     try {
       // create query
       Statement stmnt = sql.createStatement();
-
       // execute query
       stmnt.execute(sqlCommand);
-
       //insert default keys
-      //InsertData insertDefault = new InsertData();
-
       insert_Key("pwmBLWgstaNrHNE+vzI93w==", "Test Key 1", "J/y4+dzVT01uFFz7MAcd0A==");
       insert_Key("xCslWtmKhMIZnjz3dNfP0w==", "Test Key 2", "NJKdkWtg2fFAPZujbE3KEQ==");
 
@@ -91,14 +82,16 @@ public class Sql {
   }
 
   /**
-
    * Returns a ResultSet with every key and keyword from the database
    */
   public ResultSet getUpdateInfo() {
+    //create SQL query to get all keys and keywords from the database
     String query = "SELECT key, keyword FROM keys";
+    //setup ResultSet to store the result
     ResultSet res = null;
     try {
       Statement st = sql.createStatement();
+      //execute the SQL query using the statement
       res = st.executeQuery(query);
     }catch(SQLException e) {
       e.printStackTrace();
@@ -111,11 +104,12 @@ public class Sql {
    * Returns the init vector as a String using its corresponding keyword
    */
   public String getInitVector(String keyword) {
-
     String iv = null;
-
     try {
+      //execute statement to get the init vector from the database
+      //where the keyword matches the given keyword
       ResultSet result = sql.createStatement().executeQuery("SELECT iv FROM keys WHERE keyword = \'" + keyword + "\';");
+      //grab the result and put it into the String variable
       iv = result.getString(1);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -128,6 +122,8 @@ public class Sql {
    */
   public void deleteRow(String current) {
     try {
+      //execute statement to delete the row with the keyword that matches
+      //will only match one line because keyword is the primary key in the database (no duplicates)
       sql.createStatement().executeUpdate("DELETE FROM keys WHERE keyword = \'" + current + "\';");
     }catch(SQLException e) {
       e.printStackTrace();
@@ -139,11 +135,16 @@ public class Sql {
    */
   public boolean inDb(String keyword) {
       ResultSet result = null;
+      //default boolean to true (we're assuming the keyword is already in the database)
       boolean indb = true;
       try {
+          //execute statement to select a certain keyword in the database
           result = sql.createStatement().executeQuery("SELECT keyword FROM keys WHERE keyword = \'" + keyword + "\';");
-          if(!result.isBeforeFirst())
-              indb = false;
+          //if the ResultSet object is empty, the keyword was not found
+          if(!result.isBeforeFirst()) {
+            //set the corresponding boolean to false
+            indb = false;
+          }
       }catch (SQLException e) {
           e.printStackTrace();
       }
