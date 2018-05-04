@@ -8,7 +8,7 @@ public class Listkey {
   String storedKey = new String();
 
   /**
-   * Get the keyword
+   * Get the keyword.
    * @return keyWord
    */
   public String getKeyWord() {
