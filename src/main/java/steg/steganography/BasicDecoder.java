@@ -29,7 +29,7 @@ public class BasicDecoder {
               // Read least significant bit and determine if least significant bit is 1 or 0
               bits[pair.getKey()] = binary.charAt(binary.length() - 1) == '1';
             });
-    // decodes the length in order to read the message
+    // Decodes the length in order to read the message
     int length = 0;
     for (int i = 0; i < 32; i++) {
       //if bit is set

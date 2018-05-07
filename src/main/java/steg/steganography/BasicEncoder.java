@@ -18,7 +18,7 @@ public class BasicEncoder {
     // Gets the width and height of the image in use
     int width = (int) image.getWidth();
     int height = (int) image.getHeight();
-    // Creates an obeject that is a copy of the original image
+    // Creates an object that is a copy of the original image
     WritableImage copy = new WritableImage(image.getPixelReader(), width, height);
     // Creates a writer object that allows you to manipulate the pixels in the image
     PixelWriter writer = copy.getPixelWriter();
