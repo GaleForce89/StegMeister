@@ -7,10 +7,12 @@ package steg.steganography;
  */
 
 public class Model {
+  // References the encoder and decoder from BasicEncoder and BasicDecoder classes
   public BasicEncoder encoder;
   public BasicDecoder decoder;
 
   public Model() {
+    // Create basic encoder and basic decoder objects
     this.encoder = new BasicEncoder();
     this.decoder = new BasicDecoder();
   }
