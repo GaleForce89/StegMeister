@@ -28,7 +28,7 @@ public class BasicEncoder {
     boolean[] bits = encodeImage(message);
     // Alter least significant bit of each pixel
     IntStream.range(0, bits.length)
-        // get x and y values of pixel to read and wrap into a pair of an index and a pixel
+        // Get x and y values of pixel to read and wrap into a pair of an index and a pixel
         .mapToObj(i -> new Pair<>(i, reader.getArgb(i % width, i / width)))
         // If bit is set, then set the least significant bit to 1
         // If bit is not set, set it to 0
@@ -45,7 +45,7 @@ public class BasicEncoder {
   }
 
   private boolean[] encodeImage(String message) {
-    //reserve space for message data
+    // Reserve space for message data
     byte[] data = message.getBytes();
     /**
      * Create a boolean array which uses
@@ -80,7 +80,7 @@ public class BasicEncoder {
         bits[32 + i * 8 + j] = ((b >> (7 - j)) & 1) == 1;
       }
     }
-    //return the bits generated
+    // Return the bits generated
     return bits;
   }
 }

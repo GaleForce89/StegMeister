@@ -32,7 +32,7 @@ public class BasicDecoder {
     // Decodes the length in order to read the message
     int length = 0;
     for (int i = 0; i < 32; i++) {
-      //if bit is set
+      // If bit is set
       if (bits[i]) {
         //left shift the bit by 31 - i
         length |= (1 << (31 - i));
