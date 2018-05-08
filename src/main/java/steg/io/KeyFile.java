@@ -10,7 +10,7 @@ import steg.cryptography.Cryptography;
 public class KeyFile
 {
     /*writeKey Method*/
-    public void writeKey()
+    public static void writeKey(File file)
     {
         Cryptography crypt = new Cryptography();
 
@@ -21,7 +21,7 @@ public class KeyFile
         try
         {
             //bufferedWriter and PreparedStatement
-            BufferedWriter w = new BufferedWriter ( new FileWriter(".\\text.key") );
+            BufferedWriter w = new BufferedWriter ( new FileWriter(file) );
 
 
             //print variables
@@ -38,14 +38,14 @@ public class KeyFile
     }
 
     /*loadKey Method*/
-    public void loadKey()
+    public static void loadKey(File file)
     {
         //Make and send Variables
         try {
             //Call Cryptography
             Cryptography crypt = new Cryptography();
             //Make BufferedReader and FileReader
-            BufferedReader w = new BufferedReader ( new FileReader(".\\text.key") );
+            BufferedReader w = new BufferedReader ( new FileReader(file) );
 
             //Make and send Variables
             String key = w.readLine();
