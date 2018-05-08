@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 import steg.StegMeister;
 import steg.database.Sql;
+import steg.io.KeyFile;
 import steg.steganography.Model;
 
 import javax.crypto.NoSuchPaddingException;
@@ -328,7 +329,8 @@ public class Controller extends StegMeister implements Initializable {
     //create a file object which stores the selected location to send to KeyFile's loadKey method
     File file = fileChooser.showOpenDialog(new Stage());
     //Uncomment when integrated with KeyFile.java
-    //steg.io.KeyFile.loadKey(file);
+   KeyFile.loadKey(file);
+
   }
 
   /**
@@ -352,7 +354,7 @@ public class Controller extends StegMeister implements Initializable {
       if (file != null) {
         try {
           //Uncomment next line when integrated with KeyFile.java
-          //steg.io.KeyFile.writeKey(file);
+          KeyFile.writeKey(file);
           //set the status bar to show the saved key
           //substring to just the file path without file:/
           statusBar.setText("Key saved to file: " + file.toURI().toURL().toString().substring(6));
