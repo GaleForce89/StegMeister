@@ -2,8 +2,6 @@ package steg.cryptography;
 
 import org.apache.commons.codec.binary.Base64;
 
-//import java.io.FileOutputStream;
-//import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -12,6 +10,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /** The Cryptography class is the main class used for encrypting/decrypting a file */
 public class Cryptography {
@@ -29,24 +28,52 @@ public class Cryptography {
 
   /** Get current encryption initialization vector */
   public static String getVector() {
+
       return b64.encodeToString(encryptVector).trim();
   }
 
-  /** Get the current key's keyword */
-  public static String getKeyword() {
+  /** Set current encryption initialization vector */
+  public static void setVector(String v) {
 
+      encryptVector = b64.decode(v);
+  }
+
+  /** Get the current key's keyword */
+  public static String getKeyword()
+  {
     return keyword;
   }
 
   /** Set the current key's keyword */
   public static void setKeyword(String kw) {
-
-    keyword = kw;
+      keyword = kw;
   }
 
-  /** Encrypt method */
+  /**
+   * Get the current key held in memory as a String
+   *
+   * @return key
+   */
+  public static String getKeyStr() {
+    //make sure the key is not null
+    //if null, just return null
+    if(key == null)
+      return null;
+    //if not null, encode the key into a byte array
+    byte[] array = key.getEncoded();
+    //use base 64 object to encode the byte array into a string
+    return b64.encodeAsString(array).trim();
+  }
+
+  /** Set the current key held in memory */
+  public static void setKey(String k) {
+      //have to use SecretKeySpec to set the key because of how b64's decode method works
+      key = new SecretKeySpec(b64.decode(k), "AES");
+  }
+
+  /** Encrypt a message */
   public static String encrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
-    //set up the cipher
+    //if the cipher hasn't been initialized, do so
     if(stego == null)
       initCipher();
     //create the IvParameterSpec with the initialization vector
@@ -70,43 +97,30 @@ public class Cryptography {
 
     }
     return encryptString;
-
   }
 
-  /**Decrypt method */
+  /**Decrypt a message */
   public static String decrypt(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException {
-    //set up the cipher
+      //if the cipher hasn't been initialized, do so
       if(stego == null)
           initCipher();
-    //use base64 object to decode the encrypted string into a byte array
-    byte[] decoded = b64.decode(msg);
-
-    String finalString;
-    IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
-    try {
-      //set up the cipher object to decrypt using the key and IvParameterSpec
-      stego.init(Cipher.DECRYPT_MODE, key, ivpspec);
-      //decrypt the byte array using the cipher object, store decrypted plaintext in a string
-      finalString = new String(stego.doFinal(decoded), "UTF-8");
-    } catch (Exception ex) {
-      ex.printStackTrace();
+      //use base64 object to decode the encrypted string into a byte array
+      byte[] decoded = b64.decode(msg);
+      String finalString;
+      //set up the IvParameterSpec with the init vector to decrypt
+      IvParameterSpec ivpspec = new IvParameterSpec(encryptVector);
+      try {
+          //set up the cipher object to decrypt using the key and IvParameterSpec
+          stego.init(Cipher.DECRYPT_MODE, key, ivpspec);
+          //decrypt the byte array using the cipher object, store decrypted plaintext in a string
+          finalString = new String(stego.doFinal(decoded), "UTF-8");
+      } catch (Exception ex) {
+          ex.printStackTrace();
       // display something went wrong if it does
       return "Something went terribly wrong..... contact support";
 
-    }
-    return finalString;
-  }
-
-  /**
-   * Get the current key held in memory
-   *
-   * @return key
-   */
-  public static String getKeyStr() {
-    if(key == null)
-      return null;
-    byte[] array = key.getEncoded();
-    return b64.encodeAsString(array).trim();
+      }
+      return finalString;
   }
 
   /**
@@ -122,12 +136,14 @@ public class Cryptography {
   public static SecretKey genKey() throws InvalidParameterException {
 
     try {
+      //set up the key generator
       KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-
+      //initialize init vector
       encryptVector = new byte[16];
+      //generate random numbers to fill init vector
       SecureRandom randomNumber = new SecureRandom();
       randomNumber.nextBytes(encryptVector);
-
+      //generate and set the key
       return keyGen.generateKey();
     } catch (final NoSuchAlgorithmException e) {
       // AES functionality is part of java se
@@ -135,17 +151,12 @@ public class Cryptography {
     }
   }
 
-  ///**
-   //* Save the current key to a file for later use
-   //*
-   //* @param path The path and file name to save the key
-   //*/
-  //public static void saveKey(String path) {
-    //try (FileOutputStream out = new FileOutputStream(path)) {
-      //byte[] keys = key.getEncoded();
-      //out.write(keys);
-    //} catch (IOException e) {
-      //e.printStackTrace();
-    //}
-  //}
+  /**
+   * Sets the key, keyword, and encryptVector class variables to null
+   */
+  public static void wipeMemory() {
+    key = null;
+    keyword = null;
+    encryptVector = null;
+  }
 }

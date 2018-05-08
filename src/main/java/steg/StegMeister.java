@@ -25,8 +25,10 @@
  * @version 1.0 (Current version number)
  * @since 0.1 (The version that the class was first added to the project)
  */
-package steg; //Main package name. all other classes will branch off of main package.
+package steg; // Main package name. all other classes will branch off of main package.
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -40,15 +42,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 public class StegMeister extends Application {
 
   private static Stage pStage; // primary stage
 
   /**
    * StegMeister main method. Commandline not implemented. //TODO
+   *
    * @param args N/A
    */
   public static void main(String[] args) {
@@ -57,6 +57,7 @@ public class StegMeister extends Application {
 
   /**
    * Default error exception handling. launches the showerrordialog.
+   *
    * @param t Thread in which error occurred.
    * @param e The caught exception.
    */
@@ -71,27 +72,29 @@ public class StegMeister extends Application {
 
   /**
    * Default error dialog, catches all exceptions in ui.
+   *
    * @param e Stack trace.
    */
   private static void showErrorDialog(Throwable e) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Exception Dialog"); //set title
-    alert.setHeaderText("Something went horribly wrong..."); //set header (needs updating to specify)
+    alert.setTitle("Exception Dialog"); // set title
+    alert.setHeaderText(
+        "Something went horribly wrong..."); // set header (needs updating to specify)
     alert.setContentText("Click the button to view");
     alert.setResizable(true);
-    alert.initOwner(getPrimaryStage()); //set main stage as owner.
+    alert.initOwner(getPrimaryStage()); // set main stage as owner.
 
     // Create expandable Exception.
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
-    e.printStackTrace(pw); //print pipe stacktrace into print writer.
+    e.printStackTrace(pw); // print pipe stacktrace into print writer.
     String exceptionText = sw.toString();
 
-    Label label = new Label("The exception stacktrace was:"); //label to inform user.
+    Label label = new Label("The exception stacktrace was:"); // label to inform user.
 
     TextArea textArea = new TextArea(exceptionText);
-    textArea.setEditable(false); //do not allow user to edit the textarea.
-    textArea.setWrapText(true); //wrap text if needed.
+    textArea.setEditable(false); // do not allow user to edit the textarea.
+    textArea.setWrapText(true); // wrap text if needed.
 
     textArea.setMaxWidth(Double.MAX_VALUE);
     textArea.setMaxHeight(Double.MAX_VALUE);
@@ -108,11 +111,12 @@ public class StegMeister extends Application {
     alert.getDialogPane().setExpandableContent(expContent);
     alert.getDialogPane().setPrefWidth(600);
 
-    alert.showAndWait(); //show and wait.
+    alert.showAndWait(); // show and wait.
   }
 
   /**
    * Get the primary stage of the project.
+   *
    * @return Primary stage.
    */
   public static Stage getPrimaryStage() {
@@ -121,6 +125,7 @@ public class StegMeister extends Application {
 
   /**
    * Set the primary stage of the project.
+   *
    * @param pStage Primary stage.
    */
   private void setPrimaryStage(Stage pStage) {
@@ -129,19 +134,20 @@ public class StegMeister extends Application {
 
   /**
    * Runs after main, loads the project with fxml loader.
+   *
    * @param primaryStage The primary stage called with fxml loader.
    * @throws Exception A catch all exception.
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError); //global exception handling.
-    setPrimaryStage(primaryStage); //set the primary stage
-    Parent root = FXMLLoader.load(getClass().getResource("/ui/Main.fxml"));//load fxml file
-    primaryStage.setTitle("StegMeister - Key manager"); //Set the title of initial window.
+    Thread.setDefaultUncaughtExceptionHandler(StegMeister::showError); // global exception handling.
+    setPrimaryStage(primaryStage); // set the primary stage
+    Parent root = FXMLLoader.load(getClass().getResource("/ui/Main.fxml")); // load fxml file
+    primaryStage.setTitle("StegMeister - Key manager"); // Set the title of initial window.
     primaryStage
-        .getIcons() //get icon file
+        .getIcons() // get icon file
         .add(new Image(StegMeister.class.getResourceAsStream("/icons/main_icon.png")));
-    primaryStage.setScene(new Scene(root, 800, 490));//set preferred size.
-    primaryStage.show(); //show stage.
+    primaryStage.setScene(new Scene(root, 800, 490)); // set preferred size.
+    primaryStage.show(); // show stage.
   }
 }
