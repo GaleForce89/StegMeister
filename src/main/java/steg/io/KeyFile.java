@@ -4,7 +4,9 @@ import java.io.*;
 
 import steg.cryptography.Cryptography;
 
-/**KeyFile Class*/
+/**
+ * KeyFile Class
+ * */
 public class KeyFile
 {
     /*writeKey Method*/
